@@ -23,10 +23,10 @@ namespace mainWindow
             viewModel = new ViewModel();
             DataContext = viewModel;
             //bind dataGrids
-            viewModel.DataGridMass = dataGridMass;
-            viewModel.DataGridMass2 = dataGridMass2;
-            viewModel.DataGridSpeed = dataGridSpeed;
-            viewModel.DataGridSpeed2 = dataGridSpeed2;
+            viewModel.DataGridTemp = dataGridTemp;
+            viewModel.DataGridTemp2 = dataGridTemp2;
+            viewModel.DataGridFriction = dataGridFriction;
+            viewModel.DataGridFriction2 = dataGridFriction2;
             
             string taskDocName = "Task.xps";
             string theoryDocName = "Theory.xps";

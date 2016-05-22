@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 using GalaSoft.MvvmLight.CommandWpf;
@@ -17,10 +18,10 @@ namespace mainWindow
     class ViewModel : INotifyPropertyChanged
     {
         
-        private DataGrid dataGridMass;
-        private DataGrid dataGridMass2;
-        private DataGrid dataGridSpeed;
-        private DataGrid dataGridSpeed2;
+        private DataGrid dataGridTemp;
+        private DataGrid dataGridTemp2;
+        private DataGrid dataGridFriction;
+        private DataGrid dataGridFriction2;
         #region binding stuff
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(String propertyName)
@@ -39,10 +40,10 @@ namespace mainWindow
 
         //Binding prpops
         private ModelData _data;
-        private PointsDummy _pointsDummyMass;
-        private PointsDummy _pointsDummySpeed;
-        private List<ModelData> _dataMassPointsList = new List<ModelData>();
-        private List<ModelData> _dataSpeedPointsList = new List<ModelData>();
+        private PointsDummy _pointsDummyTemp;
+        private PointsDummy _pointsDummyFriction;
+        private List<ModelData> _dataTempPointsList = new List<ModelData>();
+        private List<ModelData> _dataFrictionPointsList = new List<ModelData>();
         private PlotController _customPlotController;
 
      
@@ -52,16 +53,16 @@ namespace mainWindow
 
         #region binding properties
 
-        public List<ModelData> DataMassPointsList
+        public List<ModelData> DataTempPointsList
         {
-            get { return _dataMassPointsList; }
-            set { _dataMassPointsList = value; OnPropertyChanged("DataMassPointsList"); }
+            get { return _dataTempPointsList; }
+            set { _dataTempPointsList = value; OnPropertyChanged("DataTempPointsList"); }
         }
 
-        public List<ModelData> DataSpeedPointsList
+        public List<ModelData> DataFrictionPointsList
         {
-            get { return _dataSpeedPointsList; }
-            set { _dataSpeedPointsList = value; OnPropertyChanged("DataSpeedPointsList"); }
+            get { return _dataFrictionPointsList; }
+            set { _dataFrictionPointsList = value; OnPropertyChanged("DataFrictionPointsList"); }
         }
 
 
@@ -79,16 +80,16 @@ namespace mainWindow
             set { _plotModel = value; OnPropertyChanged("PlotModel"); }
         }
 
-        public PointsDummy PointsDummyMass
+        public PointsDummy PointsDummyTemp
         {
-            get { return _pointsDummyMass; }
-            set { _pointsDummyMass = value; OnPropertyChanged("PointsDummyMass"); }
+            get { return _pointsDummyTemp; }
+            set { _pointsDummyTemp = value; OnPropertyChanged("PointsDummyTemp"); }
         }
 
-        public PointsDummy PointsDummySpeed
+        public PointsDummy PointsDummyFriction
         {
-            get { return _pointsDummySpeed; }
-            set { _pointsDummySpeed = value; OnPropertyChanged("PointsDummySpeed"); }
+            get { return _pointsDummyFriction; }
+            set { _pointsDummyFriction = value; OnPropertyChanged("PointsDummyFriction"); }
         }
 
         public PlotController CustomPlotController
@@ -107,41 +108,47 @@ namespace mainWindow
             _customPlotController.UnbindMouseDown(OxyMouseButton.Left);
             _customPlotController.BindMouseEnter(PlotCommands.HoverSnapTrack);
             _plotModel = new PlotModel();
-            _pointsDummyMass = new PointsDummy();
-            _pointsDummySpeed = new PointsDummy();
+            _pointsDummyTemp = new PointsDummy();
+            _pointsDummyFriction = new PointsDummy();
             //TESTING
             InitData(_data);
-            //PointsDummySpeed.ModelData1.MaxNumber = 0.5;
-            //PointsDummySpeed.ModelData2.MaxNumber = 0.6;
-            //PointsDummySpeed.ModelData3.MaxNumber = 0.7;
-            //PointsDummySpeed.ModelData4.MaxNumber = 0.8;
-            //PointsDummySpeed.ModelData5.MaxNumber = 0.9;
+            PointsDummyFriction.ModelData1.FRunFriction = 0.25;
+            PointsDummyFriction.ModelData2.FRunFriction = 0.1;
+            PointsDummyFriction.ModelData3.FRunFriction = 0.07;
+            PointsDummyFriction.ModelData4.FRunFriction = 0.045;
+            PointsDummyFriction.ModelData5.FRunFriction = 0.03;
+
+            PointsDummyTemp.ModelData1.P0 = 1.1455;
+            PointsDummyTemp.ModelData2.P0 = 1.1839;
+            PointsDummyTemp.ModelData3.P0 = 1.225;
+            PointsDummyTemp.ModelData4.P0 = 1.269;
+            PointsDummyTemp.ModelData5.P0 = 1.3163;
 
         }
 
-        public DataGrid DataGridMass
+        public DataGrid DataGridTemp
         {
-            get { return dataGridMass; }
-            set { dataGridMass = value; }
+            get { return dataGridTemp; }
+            set { dataGridTemp = value; }
         }
 
-        public DataGrid DataGridSpeed
+        public DataGrid DataGridFriction
         {
-            get { return dataGridSpeed; }
-            set { dataGridSpeed = value; }
+            get { return dataGridFriction; }
+            set { dataGridFriction = value; }
         }
 
 
-        public DataGrid DataGridMass2
+        public DataGrid DataGridTemp2
         {
-            get { return dataGridMass2; }
-            set { dataGridMass2 = value; }
+            get { return dataGridTemp2; }
+            set { dataGridTemp2 = value; }
         }
 
-        public DataGrid DataGridSpeed2
+        public DataGrid DataGridFriction2
         {
-            get { return dataGridSpeed2; }
-            set { dataGridSpeed2 = value; }
+            get { return dataGridFriction2; }
+            set { dataGridFriction2 = value; }
         }
 
 
@@ -186,30 +193,30 @@ namespace mainWindow
         }
 
         //TODO: update
-        private void AddDataPointForMassList()
+        private void AddDataPointForTempList()
         {
             //if (_data.P.Equals(0))
             //{
             //    return;
             //}
-            //_dataMassPointsList.Add(_data.Clone());
-            dataGridMass.ItemsSource = null;
-            dataGridMass.ItemsSource = DataMassPointsList;
-            dataGridMass2.ItemsSource = null;
-            dataGridMass2.ItemsSource = DataMassPointsList;
+            _dataTempPointsList.Add((ModelData)_data.Clone());
+            dataGridTemp.ItemsSource = null;
+            dataGridTemp.ItemsSource = DataTempPointsList;
+            dataGridTemp2.ItemsSource = null;
+            dataGridTemp2.ItemsSource = DataTempPointsList;
         }
         //TODO:update
-        private void AddDataPointForSpeedList()
+        private void AddDataPointForFrictionList()
         {
             //if (_data.P.Equals(0))
             //{
             //    return;
             //}
-            //_dataSpeedPointsList.Add(_data.Clone());
-            dataGridSpeed.ItemsSource = null;
-            dataGridSpeed.ItemsSource = DataSpeedPointsList;
-            dataGridSpeed2.ItemsSource = null;
-            dataGridSpeed2.ItemsSource = DataSpeedPointsList;
+            _dataFrictionPointsList.Add((ModelData)_data.Clone());
+            dataGridFriction.ItemsSource = null;
+            dataGridFriction.ItemsSource = DataFrictionPointsList;
+            dataGridFriction2.ItemsSource = null;
+            dataGridFriction2.ItemsSource = DataFrictionPointsList;
         }
 
         //PLOTTING METHODS
@@ -234,31 +241,18 @@ namespace mainWindow
 
         public enum SortByWhat
         {
-            Mass, Speed
+            PO, Friction
         }
 
-        private void ShowPMass()
+
+        public void ShowLTPlot()
         {
-            UpdatePlot("Mass", "P", "m, кг", "P", "зависимость P от массы", this._dataMassPointsList, SortByWhat.Mass);
+            UpdatePlot("P0", "LengthFullDistance", "T, град", "L_пос, м", "зависимость L от температуры(плотности)", this.DataTempPointsList, SortByWhat.PO);
         }
 
-        public void ShowQMass()
+        public void ShowLFPlot()
         {
-
-            UpdatePlot("Mass", "Q", "m, кг", "Q", "зависимость Q от массы", this._dataMassPointsList, SortByWhat.Mass);
-
-        }
-
-        public void ShowPV()
-        {
-            //UpdatePlot("Velocity", "P", "V, м/с", "P", "зависимость P от скорости", false, this._dataSpeedPointsList, SortByWhat.Speed);
-            UpdatePlot("MaxNumber", "P", "M", "P", "зависимость P от скорости", this._dataSpeedPointsList, SortByWhat.Speed);
-        }
-
-        public void ShowQV()
-        {
-            //UpdatePlot("Velocity", "Q", "V, м/с", "Q", "зависимость Q от скорости", false, this._dataSpeedPointsList, SortByWhat.Speed);
-            UpdatePlot("MaxNumber", "Q", "М", "Q", "зависимость Q от скорости", this._dataSpeedPointsList, SortByWhat.Speed);
+            UpdatePlot("FRunFriction", "LengthFullDistance", "F_тр", "L_пос, м", "зависимость L от коэффицента трения", this.DataFrictionPointsList, SortByWhat.Friction);
         }
 
 
@@ -266,103 +260,63 @@ namespace mainWindow
 
         #region fast points calc
         //retarded piece of code
-        /*
-        public void Calc5Mass()
+
+        public void Calc5Temp()
         {
-            //copy some data
-            PointsDummyMass.ModelData1 = _data.CopyDataForMassCalc(PointsDummyMass.ModelData1);
-            PointsDummyMass.ModelData2 = _data.CopyDataForMassCalc(PointsDummyMass.ModelData2);
-            PointsDummyMass.ModelData3 = _data.CopyDataForMassCalc(PointsDummyMass.ModelData3);
-            PointsDummyMass.ModelData4 = _data.CopyDataForMassCalc(PointsDummyMass.ModelData4);
-            PointsDummyMass.ModelData5 = _data.CopyDataForMassCalc(PointsDummyMass.ModelData5);
+            List<Double> tempValues = new List<double>()
+            { PointsDummyTemp.ModelData1.P0,
+                PointsDummyTemp.ModelData2.P0,
+                PointsDummyTemp.ModelData3.P0,
+                PointsDummyTemp.ModelData4.P0,
+                PointsDummyTemp.ModelData5.P0,
+           };
 
-            //do calculation
-            PointsDummyMass.ModelData1.CalcMu();
-            PointsDummyMass.ModelData2.CalcMu();
-            PointsDummyMass.ModelData3.CalcMu();
-            PointsDummyMass.ModelData4.CalcMu();
-            PointsDummyMass.ModelData5.CalcMu();
+            DataTempPointsList.Clear();
 
-            PointsDummyMass.ModelData1.CalcXi();
-            PointsDummyMass.ModelData2.CalcXi();
-            PointsDummyMass.ModelData3.CalcXi();
-            PointsDummyMass.ModelData4.CalcXi();
-            PointsDummyMass.ModelData5.CalcXi();
+            PointsDummyTemp = new PointsDummy(_data);
+            for (int i = 0; i < PointsDummyTemp.PointsDummyList.Count; i++)
+            {
+                PointsDummyTemp.PointsDummyList[i].P0 = tempValues[i];
+                PointsDummyTemp.PointsDummyList[i].CalcAll();
+                DataTempPointsList.Add(PointsDummyTemp.PointsDummyList[i]);
+            }
+
+            dataGridTemp.ItemsSource = null;
+            dataGridTemp2.ItemsSource = null;
+            dataGridTemp.ItemsSource = DataTempPointsList;
+            dataGridTemp2.ItemsSource = DataTempPointsList;
+
         }
 
-        public void Calc5KDash()
+        public void Calc5Friction()
         {
-            PointsDummyMass.ModelData1.CalcK();
-            PointsDummyMass.ModelData2.CalcK();
-            PointsDummyMass.ModelData3.CalcK();
-            PointsDummyMass.ModelData4.CalcK();
-            PointsDummyMass.ModelData5.CalcK();
+            List<Double> tempValues = new List<double>()
+            { PointsDummyFriction.ModelData1.FRunFriction,
+                PointsDummyFriction.ModelData2.FRunFriction,
+                PointsDummyFriction.ModelData3.FRunFriction,
+                PointsDummyFriction.ModelData4.FRunFriction,
+                PointsDummyFriction.ModelData5.FRunFriction,
+           };
 
-            PointsDummyMass.ModelData1.CalcB();
-            PointsDummyMass.ModelData2.CalcB();
-            PointsDummyMass.ModelData3.CalcB();
-            PointsDummyMass.ModelData4.CalcB();
-            PointsDummyMass.ModelData5.CalcB();
+            DataFrictionPointsList.Clear();
 
-            PointsDummyMass.ModelData1.CalcLambdaZero();
-            PointsDummyMass.ModelData2.CalcLambdaZero();
-            PointsDummyMass.ModelData3.CalcLambdaZero();
-            PointsDummyMass.ModelData4.CalcLambdaZero();
-            PointsDummyMass.ModelData5.CalcLambdaZero();
+            PointsDummyFriction = new PointsDummy(_data);
+            for (int i = 0; i < PointsDummyFriction.PointsDummyList.Count; i++)
+            {
+                PointsDummyFriction.PointsDummyList[i].FRunFriction = tempValues[i];
+                PointsDummyFriction.PointsDummyList[i].CalcAll();
+                DataFrictionPointsList.Add(PointsDummyFriction.PointsDummyList[i]);
+            }
 
-            PointsDummyMass.ModelData1.CalcLambdas();
-            PointsDummyMass.ModelData2.CalcLambdas();
-            PointsDummyMass.ModelData3.CalcLambdas();
-            PointsDummyMass.ModelData4.CalcLambdas();
-            PointsDummyMass.ModelData5.CalcLambdas();
-
-            PointsDummyMass.ModelData1.CalcPQ();
-            PointsDummyMass.ModelData2.CalcPQ();
-            PointsDummyMass.ModelData3.CalcPQ();
-            PointsDummyMass.ModelData4.CalcPQ();
-            PointsDummyMass.ModelData5.CalcPQ();
-
-            DataMassPointsList.Clear();
-            DataMassPointsList.Add(PointsDummyMass.ModelData1);
-            DataMassPointsList.Add(PointsDummyMass.ModelData2);
-            DataMassPointsList.Add(PointsDummyMass.ModelData3);
-            DataMassPointsList.Add(PointsDummyMass.ModelData4);
-            DataMassPointsList.Add(PointsDummyMass.ModelData5);
-
-            dataGridMass.ItemsSource = null;
-            dataGridMass.ItemsSource = DataMassPointsList;
-            dataGridMass2.ItemsSource = null;
-            dataGridMass2.ItemsSource = DataMassPointsList;
+            dataGridFriction.ItemsSource = null;
+            dataGridFriction.ItemsSource = DataFrictionPointsList;
+            dataGridFriction2.ItemsSource = null;
+            dataGridFriction2.ItemsSource = DataFrictionPointsList;
         }
-
-        public void Calc5Speed()
-        {
-            PointsDummySpeed.ModelData1 = _data.CopyDataForSpeedCalc(PointsDummySpeed.ModelData1);
-            PointsDummySpeed.ModelData2 = _data.CopyDataForSpeedCalc(PointsDummySpeed.ModelData2);
-            PointsDummySpeed.ModelData3 = _data.CopyDataForSpeedCalc(PointsDummySpeed.ModelData3);
-            PointsDummySpeed.ModelData4 = _data.CopyDataForSpeedCalc(PointsDummySpeed.ModelData4);
-            PointsDummySpeed.ModelData5 = _data.CopyDataForSpeedCalc(PointsDummySpeed.ModelData5);
-
-
-            PointsDummySpeed.ModelData1.CalcALL();
-            PointsDummySpeed.ModelData2.CalcALL();
-            PointsDummySpeed.ModelData3.CalcALL();
-            PointsDummySpeed.ModelData4.CalcALL();
-            PointsDummySpeed.ModelData5.CalcALL();
-
-            DataSpeedPointsList.Clear();
-            DataSpeedPointsList.Add(PointsDummySpeed.ModelData1);
-            DataSpeedPointsList.Add(PointsDummySpeed.ModelData2);
-            DataSpeedPointsList.Add(PointsDummySpeed.ModelData3);
-            DataSpeedPointsList.Add(PointsDummySpeed.ModelData4);
-            DataSpeedPointsList.Add(PointsDummySpeed.ModelData5);
-
-            dataGridSpeed.ItemsSource = null;
-            dataGridSpeed.ItemsSource = DataSpeedPointsList;
-            dataGridSpeed2.ItemsSource = null;
-            dataGridSpeed2.ItemsSource = DataSpeedPointsList;
-        }
-        */
+           
+        
+        
+        
         #endregion
 
 
@@ -493,17 +447,13 @@ namespace mainWindow
 
 
 
-        private ICommand _updateGraph;
-        private ICommand _initializePlot;
-        private ICommand _addDataPointMass;
-        private ICommand _addDataPointSpeed;
-        private ICommand _showpv;
-        private ICommand _showqv;
-        private ICommand _showph;
-        private ICommand _showqh;
-        private ICommand _put5Mass;
-        private ICommand _put5Kdash;
-        private ICommand _put5Speed;
+        private ICommand _addDataPointTemp;
+        private ICommand _addDataPointFriction;
+        private ICommand _showLT;
+        private ICommand _showLF;
+        private ICommand _put5Temp;
+        private ICommand _put5Friction;
+        //private ICommand _put5Speed;
 
         public ICommand CalcCyGliding => _calcCyGliding ?? (_calcCyGliding = new RelayCommand(delegate {  _data.CalcCyGliding(); }));
         public ICommand CalcKGliding => _calcKGliding ?? (_calcKGliding = new RelayCommand(_data.CalcKGliding));
@@ -524,20 +474,18 @@ namespace mainWindow
 
 
 
-        public ICommand ShowPMassPlot => _initializePlot ?? (_initializePlot = new RelayCommand(ShowPMass));
-        public ICommand ShowQMassPlot => _updateGraph ?? (_updateGraph = new RelayCommand(ShowQMass));
-        public ICommand ShowPVPlot => _showpv ?? (_showpv = new RelayCommand(ShowPV));
-        public ICommand ShowQVPlot => _showqv ?? (_showqv = new RelayCommand(ShowQV));
+        public ICommand ShowLT => _showLT ?? (_showLT = new RelayCommand(ShowLTPlot));
+        public ICommand ShowLF => _showLF ?? (_showLF = new RelayCommand(ShowLFPlot));
 
 
-        public ICommand AddDataPonitMass => _addDataPointMass ?? (_addDataPointMass = new RelayCommand(AddDataPointForMassList));
-        public ICommand AddDataPonitSpeed => _addDataPointSpeed ?? (_addDataPointSpeed = new RelayCommand(AddDataPointForSpeedList));
+        public ICommand AddDataPonitTemp => _addDataPointTemp ?? (_addDataPointTemp = new RelayCommand(AddDataPointForTempList));
+        public ICommand AddDataPonitFriction => _addDataPointFriction ?? (_addDataPointFriction = new RelayCommand(AddDataPointForFrictionList));
 
-        /*
-        public ICommand Put5Mass => _put5Mass ?? (_put5Mass = new RelayCommand());
-        public ICommand Put5Kdash => _put5Kdash ?? (_put5Kdash = new RelayCommand());
-        public ICommand Put5Speed => _put5Speed ?? (_put5Speed = new RelayCommand());
-        */
+        
+        public ICommand Put5Temp => _put5Temp ?? (_put5Temp = new RelayCommand(Calc5Temp));
+        public ICommand Put5Friction => _put5Friction ?? (_put5Friction = new RelayCommand(Calc5Friction));
+        //public ICommand Put5Speed => _put5Speed ?? (_put5Speed = new RelayCommand());
+        
         
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace mainWindow
@@ -22,8 +23,30 @@ namespace mainWindow
             _modelData3 = new ModelData();
             _modelData4 = new ModelData();
             _modelData5 = new ModelData();
+            _pointsDummyList = new List<ModelData>() {_modelData1, _modelData2, _modelData3, _modelData4, _modelData5};
         }
 
+        public PointsDummy(ModelData modelData1, ModelData modelData2, ModelData modelData3, ModelData modelData4, ModelData modelData5)
+        {
+            _modelData1 = modelData1;
+            _modelData2 = modelData2;
+            _modelData3 = modelData3;
+            _modelData4 = modelData4;
+            _modelData5 = modelData5;
+            _pointsDummyList = new List<ModelData>() { modelData1, modelData2, modelData3, modelData4, modelData5 };
+        }
+
+        public PointsDummy(ModelData data)
+        {
+            _modelData1 = (ModelData)data.Clone();
+            _modelData2 = (ModelData)data.Clone();
+            _modelData3 = (ModelData)data.Clone();
+            _modelData4 = (ModelData)data.Clone();
+            _modelData5 = (ModelData)data.Clone();
+            _pointsDummyList = new List<ModelData>() { _modelData1, _modelData2, _modelData3, _modelData4, _modelData5 };
+        }
+
+       
 
 
 
@@ -36,6 +59,8 @@ namespace mainWindow
         private ModelData _modelData3;
         private ModelData _modelData4;
         private ModelData _modelData5;
+        private List<ModelData> _pointsDummyList; 
+
         #endregion
 
        
@@ -68,6 +93,12 @@ namespace mainWindow
         {
             get { return _modelData5; }
             set { _modelData5 = value; OnPropertyChanged("ModelData5"); }
+        }
+
+        public List<ModelData> PointsDummyList
+        {
+            get { return _pointsDummyList; }
+            set { _pointsDummyList = value; }
         }
     }
 }

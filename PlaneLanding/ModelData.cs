@@ -8,7 +8,7 @@ namespace mainWindow
     /// <summary>
     /// Данный класс хранит все необходыме данные для вычислений
     /// </summary>
-    public class ModelData : INotifyPropertyChanged
+    public class ModelData : INotifyPropertyChanged, ICloneable
     {
         public const Double MAXCONVERT = 340.3f;
         public const Double GFORCE = 9.81;
@@ -33,11 +33,7 @@ namespace mainWindow
 
         }
 
-        public ModelData Clone()
-        {
-            ModelData newData = this.Clone();
-            return newData;
-        }
+     
 
         #endregion
 
@@ -170,7 +166,7 @@ namespace mainWindow
         /// <summary>
         /// Посадочная дистанция, м
         /// </summary>
-        private double _LenghtFullDistance;
+        private double _lengthFullDistance;
 
         /// <summary>
         /// Располагаемая посадочная дистанция, м
@@ -345,10 +341,10 @@ namespace mainWindow
             set { _LengthRun = value; OnPropertyChanged("LengthRun"); }
         }
 
-        public double LenghtFullDistance
+        public double LengthFullDistance
         {
-            get { return _LenghtFullDistance; }
-            set { _LenghtFullDistance = value; OnPropertyChanged("LenghtFullDistance"); }
+            get { return _lengthFullDistance; }
+            set { _lengthFullDistance = value; OnPropertyChanged("LengthFullDistance"); }
         }
 
         public double LengthGiven
@@ -422,12 +418,12 @@ namespace mainWindow
 
         public void CalcLengthFull()
         {
-            LenghtFullDistance = LengthGliding + LengthRun;
+            LengthFullDistance = LengthGliding + LengthRun;
         }
 
         public void CalcLengthNeeded()
         {
-            LengthNeeded = LenghtFullDistance*1.67d;
+            LengthNeeded = LengthFullDistance*1.67d;
         }
 
         public bool IsLengthNeededLessThanGiven()
@@ -443,6 +439,21 @@ namespace mainWindow
         public bool IsVelocityCheck()
         {
             return (VelocityGliding/VelocityStall > 1.3d) ? true : false;
+        }
+
+        public void CalcAll()
+        {
+            this.CalcCyGliding();
+            this.CalcKGliding();
+            this.CalcVelocityGliding();
+            this.CalcVelocityStall();
+            this.CalcKLanding();
+            this.CalcVelocityLanding();
+            this.CalcKMean();
+            this.CalcLengthGliding();
+            this.CalcLengthRun();
+            this.CalcLengthFull();
+            this.CalcLengthNeeded();
         }
 
 
@@ -468,6 +479,9 @@ namespace mainWindow
         //}
 
 
-
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }
