@@ -5,11 +5,15 @@ using OxyPlot;
 
 namespace mainWindow
 {
+    /// <summary>
+    /// Данный класс хранит все необходыме данные для вычислений
+    /// </summary>
     public class ModelData : INotifyPropertyChanged
     {
         public const Double MAXCONVERT = 340.3f;
-        private const Double GFORCE = 9.81;
-        private const Double NU = 0.4; //only for M < 1
+        public const Double GFORCE = 9.81;
+        public const Double NU = 0.4;
+        public const double CYMAXCONVERT = 0.6;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(String propertyName)
@@ -31,264 +35,436 @@ namespace mainWindow
 
         public ModelData Clone()
         {
-            ModelData newData = new ModelData();
-            newData.Mass = _mass;
-            newData.Cy = _c_y;
-            newData.Ps = _p_s;
-            newData.Ba = _b_a;
-            newData.MaxNumber = _max_number;
-            newData.Square = _square;
-            newData.NMax = _n_max;
-            newData.Time = _time;
-            newData.TimeOne = _time1;
-            newData.TimeTwo = _time2;
-            newData.L = _l;
-            newData.Velocity = _velocity;
-            newData.Height = _height;
-            newData.Mu = _mu;
-            newData.Xi = _xi;
-            newData.KDash = _kdash;
-            newData.G = _g;
-            newData.Betha = _betha;
-            newData.YAlpha = _yalpha;
-            newData.K = _k;
-            newData.B = _b;
-            newData.LambdaZero = _lambdaZero;
-            newData.LambdaOne = _lambdaOne;
-            newData.LambdaTwo = _lambdaTwo;
-            newData.BOne = _bOne;
-            newData.BTwo = _bTwo;
-            newData.P = _p;
-            newData.Q = _q;
+            ModelData newData = this.Clone();
             return newData;
         }
-
-
-       
-                               
-                    
-
-        public ModelData CopyDataForMassCalc(ModelData newData)
-        {
-            newData.Cy = _c_y;
-            newData.Ps = _p_s;
-            newData.Ba = _b_a;
-            newData.MaxNumber = _max_number;
-            newData.Square = _square;
-            newData.NMax = _n_max;
-            newData.Time = _time;
-            newData.TimeOne = _time1;
-            newData.TimeTwo = _time2;
-            newData.L = _l;
-            newData.Velocity = _velocity;
-            newData.Height = _height;
-            newData.BOne = _bOne;
-            newData.BTwo = _bTwo;
-            
-            return newData;
-        }
-
-        public ModelData CopyDataForSpeedCalc(ModelData newData)
-        {
-            newData.Mass = _mass;
-            newData.Cy = _c_y;
-            newData.Ps = _p_s;
-            newData.Ba = _b_a;
-            newData.Square = _square;
-            newData.NMax = _n_max;
-            newData.Time = _time;
-            newData.TimeOne = _time1;
-            newData.TimeTwo = _time2;
-            newData.L = _l;
-            newData.Height = _height;
-            newData.BOne = _bOne;
-            newData.BTwo = _bTwo;
-            newData.KDash = _kdash;
-            return newData;
-        }
-
-
 
         #endregion
 
         #region private_fileds
+        /// <summary>
+        /// Высота условного препятствия
+        /// </summary>
+        private double _hlanding;
+
+        /// <summary>
+        /// Масса самолета
+        /// </summary>
         private double _mass;
-        private double _c_y;
-        private double _p_s;
-        private double _b_a;
-        private double _max_number;
-        private double _square;
-        private double _n_max;
-        private double _time;
-        private double _l;
-        private double _velocity;
-        private double _height;
-        private double _mu;
-        private double _xi;
-        private double _kdash;
-        private double _g;
-        private double _betha;
-        private double _yalpha;
-        private double _k;
-        private double _b;
-        private double _lambdaZero;
-        private double _bOne;
-        private double _bTwo;
-        private double _lambdaOne;
-        private double _lambdaTwo;
-        private double _time1;
-        private double _time2;
-        private double _p;
-        private double _q;
+
+        /// <summary>
+        /// Коэффицент трения при пробеге
+        /// </summary>
+        private double _fRunFriction;
+
+        /// <summary>
+        /// Продолная составляющая ветра
+        /// </summary>
+        private double _longitudinalWind;
+
+        /// <summary>
+        /// Поперечный ветер
+        /// </summary>
+        private double _crossWind;
+
+        /// <summary>
+        /// Температура
+        /// </summary>
+        private double _temperature;
+
+        private double _CyMaxLanding;
+        /// <summary>
+        /// Коэфф проъемной силы при планировании
+        /// _cyMaxLanding*0.6
+        /// </summary>
+        private double _CyGliding;
+
+        /// <summary>
+        /// Коэффициент лобового сопротивления при планировании
+        /// </summary>
+        private double _CxGliding;
+
+        /// <summary>
+        /// Аэродинамическое качество ВС при планировании
+        /// </summary>
+        private double _KGliding;
+
+        private double _GGliding;
+
+        /// <summary>
+        /// Плотность воздуха, кг/м3
+        /// </summary>
+        private double _p_0;
+
+        /// <summary>
+        /// Площадь крыла, м2
+        /// </summary>
+        private double _S;
+
+        /// <summary>
+        /// Скорость предпосадочного планирования 
+        /// </summary>
+        private double _VelocityGliding;
+
+        /// <summary>
+        /// Угол атаки сваливания
+        /// </summary>
+        private double _ac;
+
+        /// <summary>
+        /// Коэффициент подъемной силы сваливания
+        /// </summary>
+        private double _CyStall;
+
+        /// <summary>
+        /// Скорость сваливания, м/с
+        /// </summary>
+        private double _VelocityStall;
+
+        /// <summary>
+        /// Коэффициент подъемной силы при посадочном угле атаки(7-10º)
+        /// </summary>
+        private double _CyLanding;
+
+        /// <summary>
+        /// Коэффициент лобового сопротивления при посадке
+        /// </summary>
+        private double _CxLanding;
+
+        /// <summary>
+        /// Аэродинамическое качество ВС при посадке
+        /// </summary>
+        private double _KLanding;
+
+
+        /// <summary>
+        /// Посадочная скорость ВС, м/с
+        /// </summary>
+        private double _VelocityLadning;
+
+        /// <summary>
+        /// Среднее аэродинамическое качество ВС на участке планирования - парашютирования
+        /// </summary>
+        private double _KMean;
+
+        /// <summary>
+        /// Дистанция воздушного посадочного участка, м
+        /// </summary>
+        private double _LengthGliding;
+
+        /// <summary>
+        /// Коэффициент подъемной силы при пробеге 
+        /// </summary>
+        private double _CyRun;
+
+        /// <summary>
+        /// Коэффициент лобового сопротивления при пробеге
+        /// </summary>
+        private double _CxRun;
+
+        /// <summary>
+        /// Длина пробега, м
+        /// </summary>
+        private double _LengthRun;
+
+        /// <summary>
+        /// Посадочная дистанция, м
+        /// </summary>
+        private double _LenghtFullDistance;
+
+        /// <summary>
+        /// Располагаемая посадочная дистанция, м
+        /// </summary>
+        private double _LengthGiven;
+
+        /// <summary>
+        /// Потребная посадочная дистанция, м
+        /// </summary>
+        private double _LengthNeeded;
+
         #endregion
 
 
         #region Properties
 
-        public double Mass { get { return _mass; } set { _mass = value; OnPropertyChanged("Mass"); } }
-        /// <summary>
-        /// коэффициент подъемной силы
-        /// </summary>
-        public double Cy { get { return _c_y; } set { _c_y = value; OnPropertyChanged("Cy"); } }
-        /// <summary>
-        /// Плотность воздуха
-        /// </summary>
-        public double Ps { get { return _p_s; } set { _p_s = value; OnPropertyChanged("Ps"); } }
-        /// <summary>
-        /// Средняя аэродимаческая хорда
-        /// </summary>  
-        public double Ba { get { return _b_a; } set { _b_a = value; OnPropertyChanged("Ba"); } }
-        /// <summary>
-        /// Число Маха
-        /// </summary>
-        public double MaxNumber
+        public double Mass
         {
-            get { return _max_number; }
-            set
-            {
-                _max_number = value;
-                Velocity = value * MAXCONVERT; OnPropertyChanged("Max_Number");
-            }
+            get { return _mass; }
+            set { _mass = value; OnPropertyChanged("Mass"); }
         }
-        public double Square { get { return _square; } set { _square = value; OnPropertyChanged("Square"); } }
-        public double NMax { get { return _n_max; } set { _n_max = value; OnPropertyChanged("NMax"); } } 
-        public double Time { get { return _time; } set { _time = value; OnPropertyChanged("Time"); } }
-        public double L { get { return _l; } set { _l = value; OnPropertyChanged("L"); } }
-        public double Velocity { get { return _velocity; } set { _velocity = value; OnPropertyChanged("Velocity"); } }
-        public double Height { get { return _height; } set { _height = value; OnPropertyChanged("Height"); } }
 
-        //stage 2 (Calculated)
-        public double Mu { get { return _mu; } set { _mu = value; OnPropertyChanged("Mu"); } }
-        public double Xi { get { return _xi; } set { _xi = value; OnPropertyChanged("Xi"); } }
-        public double KDash { get { return _kdash; } set { _kdash = value; OnPropertyChanged("KDash"); } }
+        public double Hlanding
+        {
+            get { return _hlanding; }
+            set { _hlanding = value; OnPropertyChanged("Hlanding"); }
+        }
 
-        //stage 3
-        public double G { get { return _g; } set { _g = value; OnPropertyChanged("G"); } }
-        public double Betha { get { return _betha; } set { _betha = value; OnPropertyChanged("Betha"); } }
-        public double YAlpha { get { return _yalpha; } set { _yalpha = value; OnPropertyChanged("YAlpha"); } }
-        public double K { get { return _k; } set { _k = value; OnPropertyChanged("K"); } }
+        public double FRunFriction
+        {
+            get { return _fRunFriction; }
+            set { _fRunFriction = value; OnPropertyChanged("FRunFRiction"); }
+        }
 
-        //Stage 4
-        public double B { get { return _b; } set { _b = value; OnPropertyChanged("B"); } }
+        public double LongitudinalWind
+        {
+            get { return _longitudinalWind; }
+            set { _longitudinalWind = value; OnPropertyChanged("LongitudinalWind"); }
+        }
 
-        //Stage 5
-        public double LambdaZero { get { return _lambdaZero; } set { _lambdaZero = value; OnPropertyChanged("LambdaZero"); } }
-        public double BOne { get { return _bOne; } set { _bOne = value; OnPropertyChanged("BOne"); } }
-        public double BTwo { get { return _bTwo; } set { _bTwo = value; OnPropertyChanged("BTwo"); } }
-        public double LambdaOne { get { return _lambdaOne; } set { _lambdaOne = value; OnPropertyChanged("LambdaOne"); } }
-        public double LambdaTwo { get { return _lambdaTwo; } set { _lambdaTwo = value; OnPropertyChanged("LambdaTwo"); } }
-        public double TimeOne { get { return _time1; } set { _time1 = value; OnPropertyChanged("TimeOne"); } }
-        public double TimeTwo { get { return _time2; } set { _time2 = value; OnPropertyChanged("TimeTwo"); } }
-        public double P { get { return _p; } set { _p = value; OnPropertyChanged("P"); } }
-        public double Q { get { return _q; } set { _q = value; OnPropertyChanged("Q"); } }
+        public double CrossWind
+        {
+            get { return _crossWind; }
+            set { _crossWind = value; OnPropertyChanged("CrossWind"); }
+        }
+
+        public double Temperature
+        {
+            get { return _temperature; }
+            set { _temperature = value; OnPropertyChanged("Temperature"); }
+        }
+
+        public double CyMaxLanding
+        {
+            get { return _CyMaxLanding; }
+            set { _CyMaxLanding = value; OnPropertyChanged("CyMaxLanding"); }
+        }
+
+        public double CyGliding
+        {
+            get { return _CyGliding; }
+            set { _CyGliding = value; OnPropertyChanged("CyGliding"); }
+        }
+
+        public double CxGliding
+        {
+            get { return _CxGliding; }
+            set { _CxGliding = value; OnPropertyChanged("CxGliding"); }
+        }
+
+        public double KGliding
+        {
+            get { return _KGliding; }
+            set { _KGliding = value; OnPropertyChanged("KGliding"); }
+        }
+
+        public double GGliding
+        {
+            get { return _GGliding; }
+            set { _GGliding = value; OnPropertyChanged("GGliding"); }
+        }
+
+        public double P0
+        {
+            get { return _p_0; }
+            set { _p_0 = value; OnPropertyChanged("P0"); }
+        }
+
+        public double S
+        {
+            get { return _S; }
+            set { _S = value; OnPropertyChanged("S"); }
+        }
+
+        public double VelocityGliding
+        {
+            get { return _VelocityGliding; }
+            set { _VelocityGliding = value; OnPropertyChanged("VelocityGliding"); }
+        }
+
+        public double Ac
+        {
+            get { return _ac; }
+            set { _ac = value; OnPropertyChanged("Ac"); }
+        }
+
+        public double CyStall
+        {
+            get { return _CyStall; }
+            set { _CyStall = value; OnPropertyChanged("CyStall"); }
+        }
+
+        public double VelocityStall
+        {
+            get { return _VelocityStall; }
+            set { _VelocityStall = value; OnPropertyChanged("VelocityStall"); }
+        }
+
+        public double CyLanding
+        {
+            get { return _CyLanding; }
+            set { _CyLanding = value; OnPropertyChanged("CyLanding"); }
+        }
+
+        public double CxLanding
+        {
+            get { return _CxLanding; }
+            set { _CxLanding = value; OnPropertyChanged("CxLanding"); }
+        }
+
+        public double KLanding
+        {
+            get { return _KLanding; }
+            set { _KLanding = value; OnPropertyChanged("KLanding"); }
+        }
+
+        public double VelocityLadning
+        {
+            get { return _VelocityLadning; }
+            set { _VelocityLadning = value; OnPropertyChanged("VelocityLadning"); }
+        }
+
+        public double KMean
+        {
+            get { return _KMean; }
+            set { _KMean = value; OnPropertyChanged("KMean"); }
+        }
+
+        public double LengthGliding
+        {
+            get { return _LengthGliding; }
+            set { _LengthGliding = value; OnPropertyChanged("LengthGliding"); }
+        }
+
+        public double CyRun
+        {
+            get { return _CyRun; }
+            set { _CyRun = value; OnPropertyChanged("CyRun"); }
+        }
+
+        public double CxRun
+        {
+            get { return _CxRun; }
+            set { _CxRun = value; OnPropertyChanged("CxRun"); }
+        }
+
+        public double LengthRun
+        {
+            get { return _LengthRun; }
+            set { _LengthRun = value; OnPropertyChanged("LengthRun"); }
+        }
+
+        public double LenghtFullDistance
+        {
+            get { return _LenghtFullDistance; }
+            set { _LenghtFullDistance = value; OnPropertyChanged("LenghtFullDistance"); }
+        }
+
+        public double LengthGiven
+        {
+            get { return _LengthGiven; }
+            set { _LengthGiven = value; OnPropertyChanged("LengthGiven"); }
+        }
+
+        public double LengthNeeded
+        {
+            get { return _LengthNeeded; }
+            set { _LengthNeeded = value; OnPropertyChanged("LengthNeeded"); }
+        }
 
         #endregion
 
-        #region Mathematical Calculations
+        #region  Calculations
 
-        public void CalcMu()
+        public void CalcCyGliding()
         {
-            Mu = 2f * Mass / (Cy * Ps * Square * Ba);
+            CyGliding = CyMaxLanding*CYMAXCONVERT;
         }
 
-        public void CalcXi()
+        public void CalcKGliding()
         {
-            Xi = Ba / L;
+            KGliding = CyGliding/CxGliding;
         }
-
 
         public void CalcG()
         {
-            G = Ps * Velocity * Velocity / 2f;
+            GGliding = Mass*GFORCE*1000d;
         }
 
-
-        public void CalcYAlpha()
+        public void CalcVelocityGliding()
         {
-            YAlpha = -Cy * G * Square / (Mass * Velocity);
+            VelocityGliding = Math.Sqrt(2d*GGliding/(P0*S*CyGliding));
         }
 
-        public void CalcBetha()
+        public void CalcVelocityStall()
         {
-            Betha = Velocity / L;
+            VelocityStall = Math.Sqrt(2d*GGliding/(P0*S*CyStall));
+           
         }
 
-        public void CalcK()
+        public void CalcKLaning()
         {
-            CalcG();
-            CalcBetha();
-            CalcYAlpha();
-            K = Math.Sqrt(1f - 1.5f * YAlpha / Betha) / (1f - YAlpha / Betha);
+            KLanding = CyLanding/CxLanding;
         }
 
-        public void CalcB()
+        public void CalcVelocityLanding()
         {
-            B = K * KDash * Cy * Ps * Velocity * Square / (2f * Mass * GFORCE);
+            VelocityLadning = Math.Sqrt(2d*GGliding/(P0*S*CyLanding));
         }
 
-        public void CalcLambdaZero()
+        public void CalcKMean()
         {
-            LambdaZero = Velocity * NU * 1000f / (Math.Sqrt(Ba * L) * K * KDash);
-
+            KMean = (KGliding + KLanding)*0.5d;
         }
 
-        public void CalcLambdas()
+        public void CalcLengthGliding()
         {
-            LambdaOne = LambdaZero * Math.Exp(-NMax / (B * BOne));
-            LambdaTwo = LambdaZero * Math.Exp(-NMax / (B * BTwo));
+            LengthGliding = KMean*
+                            ((VelocityGliding*VelocityGliding - VelocityLadning*VelocityLadning)/(2d*GFORCE) + Hlanding);
         }
 
-        public void CalcPQ()
+        public void CalcLengthRun()
         {
-            P = Math.Exp(-(TimeOne * LambdaOne + TimeTwo * LambdaTwo) * Time);
-            Q = 1f - P;
+            LengthRun = VelocityLadning*VelocityLadning/(GFORCE*(CxRun/CyLanding) + FRunFriction*(2 - CyRun/CyLanding));
+
         }
 
-        public void CalcALL()
+        public void CalcLengthFull()
         {
-            CalcMu(); CalcXi(); CalcG(); CalcYAlpha(); CalcBetha(); CalcK();
-            CalcB(); CalcLambdaZero(); CalcLambdas(); CalcPQ();
+            LenghtFullDistance = LengthGliding + LengthRun;
         }
+
+        public void CalcLengthNeeded()
+        {
+            LengthNeeded = LenghtFullDistance*1.67d;
+        }
+
+        public bool IsLengthNeededLessThanGiven()
+        {
+            return LengthNeeded < LengthGiven ? true : false;
+        }
+
+
+        /// <summary>
+        /// Проверка: Vпл/Vc > 1,3
+        /// </summary>
+        /// <returns></returns>
+        public bool IsVelocityCheck()
+        {
+            return (VelocityGliding/VelocityStall > 1.3d) ? true : false;
+        }
+
+
         #endregion
 
-       
-        public List<DataPoint> GetDepenedncyPointsPv(String propX, String propY, Double upperBorder)
-        {
-            List<DataPoint> list = new List<DataPoint>();
-            ModelData copy = this.Clone();
 
-            double oldValue = (double)this.GetType().GetProperty(propX).GetValue(this, null);
-            double inc = oldValue / 100;
-            this.GetType().GetProperty(propX).SetValue(this, 0);
-            for (int i = 0; (double)this.GetType().GetProperty(propX).GetValue(this, null) < upperBorder && i< 400; i++)
-            {
-                CalcALL();
-                list.Add(new DataPoint((double)this.GetType().GetProperty(propX).GetValue(this, null), (double)this.GetType().GetProperty(propY).GetValue(this, null)));
-                this.GetType().GetProperty(propX).SetValue(this, (double)this.GetType().GetProperty(propX).GetValue(this, null) + inc);
-            }
-            this.GetType().GetProperty(propX).SetValue(this, oldValue);
-            return list;
-        }
+        //public List<DataPoint> GetDepenedncyPointsPv(String propX, String propY, Double upperBorder)
+        //{
+        //    List<DataPoint> list = new List<DataPoint>();
+        //    ModelData copy = this.Clone();
+
+        //    double oldValue = (double)this.GetType().GetProperty(propX).GetValue(this, null);
+        //    double inc = oldValue / 100;
+        //    this.GetType().GetProperty(propX).SetValue(this, 0);
+        //    for (int i = 0; (double)this.GetType().GetProperty(propX).GetValue(this, null) < upperBorder && i < 400; i++)
+        //    {
+        //        CalcALL();
+        //        list.Add(new DataPoint((double)this.GetType().GetProperty(propX).GetValue(this, null), (double)this.GetType().GetProperty(propY).GetValue(this, null)));
+        //        this.GetType().GetProperty(propX).SetValue(this, (double)this.GetType().GetProperty(propX).GetValue(this, null) + inc);
+        //    }
+        //    this.GetType().GetProperty(propX).SetValue(this, oldValue);
+        //    return list;
+        //}
+
 
 
     }
