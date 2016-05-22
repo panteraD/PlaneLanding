@@ -16,7 +16,7 @@ namespace mainWindow
 {
     class ViewModel : INotifyPropertyChanged
     {
-
+        
         private DataGrid dataGridMass;
         private DataGrid dataGridMass2;
         private DataGrid dataGridSpeed;
@@ -33,19 +33,19 @@ namespace mainWindow
         }
 
         #endregion
-        private ModelData _data;
+        
+        //OxyRender smth
         private PlotModel _plotModel;
+
+        //Binding prpops
+        private ModelData _data;
         private PointsDummy _pointsDummyMass;
         private PointsDummy _pointsDummySpeed;
         private List<ModelData> _dataMassPointsList = new List<ModelData>();
         private List<ModelData> _dataSpeedPointsList = new List<ModelData>();
         private PlotController _customPlotController;
 
-        public enum SortByWhat
-        {
-            Mass,
-            Speed
-        };
+     
 
 
 
@@ -110,7 +110,7 @@ namespace mainWindow
             _pointsDummyMass = new PointsDummy();
             _pointsDummySpeed = new PointsDummy();
             //TESTING
-            //InitData(_data);
+            InitData(_data);
             //PointsDummySpeed.ModelData1.MaxNumber = 0.5;
             //PointsDummySpeed.ModelData2.MaxNumber = 0.6;
             //PointsDummySpeed.ModelData3.MaxNumber = 0.7;
@@ -147,51 +147,80 @@ namespace mainWindow
 
         private void InitData(ModelData data)
         {
-            data.Height = 10000;
-            data.Cy = 3.5;
-            data.Ps = 1.167;
-            data.MaxNumber = 0.6;
-            data.Square = 200;
-            data.Mass = 100000;
-            data.Ba = 7;
-            data.NMax = 1.5;
-            data.Time = 100;
-            data.L = 300;
+            data.Mass = 165d;
+            data.LongitudinalWind = 0;
+            data.CrossWind = 0;
+            data.Hlanding = 15d;
+            data.Temperature = 25; //TODO: is it really needed?
+            data.CyMaxLanding = 2.35d;
+            //data.CalcCyGliding(); //get CyGlding
+            data.CxGliding = 0.18d;
+         //   data.CalcKGliding(); //calc
+            data.P0 = 1.1839;
+            data.S = 350;
+           // data.CalcVelocityGliding(); //calc
+            data.Ac = 7; //NOT USED
+            data.CyStall = 2.4;
 
-            data.KDash = 0.87;
-            data.BOne = 1.04;
-            data.BTwo = 3.38;
-            data.TimeOne = 0.085;
-            data.TimeTwo = 0.00005;
+            //PP2
+           // data.CalcVelocityStall(); //calc
+            // make a check
+            data.CyLanding = 1.7;
+            data.CxLanding = 0.22;
+           // data.CalcKLanding(); //calc
+            //data.CalcVelocityLanding(); //calc
+            //data.CalcKMean();
+          //  data.CalcLengthGliding();
+            data.CyRun = 1.05;
+            data.CxRun = 0.175;
+            data.FRunFriction = 0.25;
+          //  data.CalcLengthRun();
+          //  data.CalcLengthFull();
+            data.LengthGiven = 3500;
+          //  data.CalcLengthNeeded();
+
+
+
+
+
         }
 
+        //TODO: update
         private void AddDataPointForMassList()
         {
-            if (_data.P.Equals(0))
-            {
-                return;
-            }
-            _dataMassPointsList.Add(_data.Clone());
+            //if (_data.P.Equals(0))
+            //{
+            //    return;
+            //}
+            //_dataMassPointsList.Add(_data.Clone());
             dataGridMass.ItemsSource = null;
             dataGridMass.ItemsSource = DataMassPointsList;
             dataGridMass2.ItemsSource = null;
             dataGridMass2.ItemsSource = DataMassPointsList;
         }
-
+        //TODO:update
         private void AddDataPointForSpeedList()
         {
-            if (_data.P.Equals(0))
-            {
-                return;
-            }
-            _dataSpeedPointsList.Add(_data.Clone());
+            //if (_data.P.Equals(0))
+            //{
+            //    return;
+            //}
+            //_dataSpeedPointsList.Add(_data.Clone());
             dataGridSpeed.ItemsSource = null;
             dataGridSpeed.ItemsSource = DataSpeedPointsList;
             dataGridSpeed2.ItemsSource = null;
             dataGridSpeed2.ItemsSource = DataSpeedPointsList;
         }
 
+        //PLOTTING METHODS
 
+        /// <summary>
+        /// Converts ModelData points list to DataPoint list by given props
+        /// </summary>
+        /// <param name="propX"></param>
+        /// <param name="propY"></param>
+        /// <param name="dataPointsList"></param>
+        /// <returns></returns>
         public List<DataPoint> GetXYPointsFromAll(String propX, String propY, List<ModelData> dataPointsList)
         {
             List<DataPoint> list = new List<DataPoint>();
@@ -203,7 +232,10 @@ namespace mainWindow
             return list;
         }
 
-
+        public enum SortByWhat
+        {
+            Mass, Speed
+        }
 
         private void ShowPMass()
         {
@@ -231,8 +263,10 @@ namespace mainWindow
 
 
 
+
         #region fast points calc
         //retarded piece of code
+        /*
         public void Calc5Mass()
         {
             //copy some data
@@ -328,13 +362,13 @@ namespace mainWindow
             dataGridSpeed2.ItemsSource = null;
             dataGridSpeed2.ItemsSource = DataSpeedPointsList;
         }
-
+        */
         #endregion
 
 
 
 
-        #region Plottting methods
+        #region Plotting methods
 
 
 
@@ -346,7 +380,6 @@ namespace mainWindow
         /// <param name="xAxisTitle">x axis title</param>
         /// <param name="yAxisTitle">y axis title</param>
         /// <param name="legend">legend</param>
-        /// <param name="dataIndepended">deprected</param>
         /// <param name="dataPointsList">reference to List containing modelData points</param>
         /// <param name="sortByWhat">sort by SortByWhat enum</param>
         private void UpdatePlot(String xProp, String yProp, String xAxisTitle, String yAxisTitle, String legend, List<ModelData> dataPointsList, SortByWhat sortByWhat)
@@ -378,8 +411,6 @@ namespace mainWindow
                 StringFormat = "0.####"
 
             };
-
-
 
             PlotModel.Axes.Add(xAxis);
             PlotModel.Axes.Add(yAxis);
@@ -421,7 +452,8 @@ namespace mainWindow
                 MessageBox.Show("Количество добаленных точек меньше двух");
                 return;
             }
-
+           
+            /*
             if (sortByWhat.Equals(SortByWhat.Mass))
             {
                 //сортировка  точек в листе по массе
@@ -431,6 +463,7 @@ namespace mainWindow
             {
                 dataPointsList.Sort(delegate (ModelData c1, ModelData c2) { return c1.Velocity.CompareTo(c2.Velocity); });
             }
+            */
 
             lineSerie.Points.AddRange(this.GetXYPointsFromAll(param1, param2, dataPointsList));
 
@@ -441,12 +474,25 @@ namespace mainWindow
         #endregion
 
         #region click handlers
-        private ICommand _calcMuXi;
-        private ICommand _calcK;
-        private ICommand _calcB;
-        private ICommand _calcLambdaZero;
-        private ICommand _calcLambdas;
-        private ICommand _calcPQ;
+
+        
+        private ICommand _calcCyGliding;
+        private ICommand _calcKGliding;
+        private ICommand _calcG;
+        private ICommand _calcVelocityGliding;
+        private ICommand _calcVelocityStall;
+        private ICommand _calcKLanding;
+        private ICommand _calcVelocityLanding;
+        private ICommand _calcKMean;
+        private ICommand _calcLengthGliding;
+        private ICommand _calcLengthRun;
+        private ICommand _calcLengthFull;
+        private ICommand _calcLengthNeeded;
+
+
+
+
+
         private ICommand _updateGraph;
         private ICommand _initializePlot;
         private ICommand _addDataPointMass;
@@ -459,12 +505,25 @@ namespace mainWindow
         private ICommand _put5Kdash;
         private ICommand _put5Speed;
 
-        public ICommand CalcMu => _calcMuXi ?? (_calcMuXi = new RelayCommand(delegate { _data.CalcXi(); _data.CalcMu(); }));
-        public ICommand CalcK => _calcK ?? (_calcK = new RelayCommand(_data.CalcK));
-        public ICommand CalcB => _calcB ?? (_calcB = new RelayCommand(_data.CalcB));
-        public ICommand CalcLambdaZero => _calcLambdaZero ?? (_calcLambdaZero = new RelayCommand(_data.CalcLambdaZero));
-        public ICommand CalcLambdas => _calcLambdas ?? (_calcLambdas = new RelayCommand(_data.CalcLambdas));
-        public ICommand CalcPQ => _calcPQ ?? (_calcPQ = new RelayCommand(_data.CalcPQ));
+        public ICommand CalcCyGliding => _calcCyGliding ?? (_calcCyGliding = new RelayCommand(delegate {  _data.CalcCyGliding(); }));
+        public ICommand CalcKGliding => _calcKGliding ?? (_calcKGliding = new RelayCommand(_data.CalcKGliding));
+        public ICommand CalcG => _calcG ?? (_calcG = new RelayCommand(_data.CalcG));
+        public ICommand CalcVelocityGliding => _calcVelocityGliding ?? (_calcVelocityGliding = new RelayCommand(_data.CalcVelocityGliding));
+        public ICommand CalcVelocityStall => _calcVelocityStall ?? (_calcVelocityStall = new RelayCommand(_data.CalcVelocityStall));
+        public ICommand CalcKLanding => _calcKLanding ?? (_calcKLanding = new RelayCommand(_data.CalcKLanding));
+        public ICommand CalcVelocityLanding => _calcVelocityLanding ?? (_calcVelocityLanding = new RelayCommand(_data.CalcVelocityLanding));
+        public ICommand CalcKMean => _calcKMean ?? (_calcKMean = new RelayCommand(_data.CalcKMean));
+        public ICommand CalcLengthGliding => _calcLengthGliding ?? (_calcLengthGliding = new RelayCommand(_data.CalcLengthGliding));
+        public ICommand CalcLengthRun => _calcLengthRun ?? (_calcLengthRun = new RelayCommand(_data.CalcLengthRun));
+        public ICommand CalcLengthFull => _calcLengthFull ?? (_calcLengthFull = new RelayCommand(_data.CalcLengthFull));
+        public ICommand CalcLengthNeeded => _calcLengthNeeded ?? (_calcLengthNeeded = new RelayCommand(
+            delegate {_data.CalcLengthFull();
+                         _data.CalcLengthNeeded();
+            }));
+
+
+
+
         public ICommand ShowPMassPlot => _initializePlot ?? (_initializePlot = new RelayCommand(ShowPMass));
         public ICommand ShowQMassPlot => _updateGraph ?? (_updateGraph = new RelayCommand(ShowQMass));
         public ICommand ShowPVPlot => _showpv ?? (_showpv = new RelayCommand(ShowPV));
@@ -474,9 +533,12 @@ namespace mainWindow
         public ICommand AddDataPonitMass => _addDataPointMass ?? (_addDataPointMass = new RelayCommand(AddDataPointForMassList));
         public ICommand AddDataPonitSpeed => _addDataPointSpeed ?? (_addDataPointSpeed = new RelayCommand(AddDataPointForSpeedList));
 
-        public ICommand Put5Mass => _put5Mass ?? (_put5Mass = new RelayCommand(Calc5Mass));
-        public ICommand Put5Kdash => _put5Kdash ?? (_put5Kdash = new RelayCommand(Calc5KDash));
-        public ICommand Put5Speed => _put5Speed ?? (_put5Speed = new RelayCommand(Calc5Speed));
+        /*
+        public ICommand Put5Mass => _put5Mass ?? (_put5Mass = new RelayCommand());
+        public ICommand Put5Kdash => _put5Kdash ?? (_put5Kdash = new RelayCommand());
+        public ICommand Put5Speed => _put5Speed ?? (_put5Speed = new RelayCommand());
+        */
+        
 
         #endregion
     }

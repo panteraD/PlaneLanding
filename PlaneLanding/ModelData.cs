@@ -190,7 +190,9 @@ namespace mainWindow
         public double Mass
         {
             get { return _mass; }
-            set { _mass = value; OnPropertyChanged("Mass"); }
+            set { _mass = value; OnPropertyChanged("Mass");
+                CalcG();
+            }
         }
 
         public double Hlanding
@@ -391,7 +393,7 @@ namespace mainWindow
            
         }
 
-        public void CalcKLaning()
+        public void CalcKLanding()
         {
             KLanding = CyLanding/CxLanding;
         }
@@ -414,7 +416,7 @@ namespace mainWindow
 
         public void CalcLengthRun()
         {
-            LengthRun = VelocityLadning*VelocityLadning/(GFORCE*(CxRun/CyLanding) + FRunFriction*(2 - CyRun/CyLanding));
+            LengthRun = VelocityLadning*VelocityLadning/(GFORCE*(CxRun/CyLanding + FRunFriction*(2 - CyRun/CyLanding)));
 
         }
 

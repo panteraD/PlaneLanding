@@ -163,12 +163,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\K.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Table.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\plane.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +176,21 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\air_pressure.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\friction_table.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\IL76.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\IL96.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TU204.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
