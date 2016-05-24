@@ -247,7 +247,7 @@ namespace mainWindow
 
         public void ShowLTPlot()
         {
-            UpdatePlot("P0", "LengthFullDistance", "T, град", "L_пос, м", "зависимость L от температуры(плотности)", this.DataTempPointsList, SortByWhat.PO);
+            UpdatePlot("Temperature", "LengthFullDistance", "T, град", "L_пос, м", "зависимость L от температуры(плотности)", this.DataTempPointsList, SortByWhat.PO);
         }
 
         public void ShowLFPlot()
@@ -271,12 +271,15 @@ namespace mainWindow
                 PointsDummyTemp.ModelData5.P0,
            };
 
+            List<Double> tempList = new List<double>() {35,25,15,5,-5};
+
             DataTempPointsList.Clear();
 
             PointsDummyTemp = new PointsDummy(_data);
             for (int i = 0; i < PointsDummyTemp.PointsDummyList.Count; i++)
             {
                 PointsDummyTemp.PointsDummyList[i].P0 = tempValues[i];
+                PointsDummyTemp.PointsDummyList[i].Temperature = tempList[i];
                 PointsDummyTemp.PointsDummyList[i].CalcAll();
                 DataTempPointsList.Add(PointsDummyTemp.PointsDummyList[i]);
             }
