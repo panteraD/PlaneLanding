@@ -33,7 +33,7 @@ namespace mainWindow
 
         }
 
-     
+
 
         #endregion
 
@@ -186,7 +186,9 @@ namespace mainWindow
         public double Mass
         {
             get { return _mass; }
-            set { _mass = value; OnPropertyChanged("Mass");
+            set
+            {
+                _mass = value; OnPropertyChanged("Mass");
                 CalcG();
             }
         }
@@ -365,54 +367,55 @@ namespace mainWindow
 
         public void CalcCyGliding()
         {
-            CyGliding = CyMaxLanding*CYMAXCONVERT;
+            CyGliding = CyMaxLanding * CYMAXCONVERT;
         }
 
         public void CalcKGliding()
         {
-            KGliding = CyGliding/CxGliding;
+            KGliding = CyGliding / CxGliding;
         }
 
         public void CalcG()
         {
-            GGliding = Mass*GFORCE*1000d;
+            GGliding = Mass * GFORCE * 1000d;
         }
 
         public void CalcVelocityGliding()
         {
-            VelocityGliding = Math.Sqrt(2d*GGliding/(P0*S*CyGliding));
+            VelocityGliding = Math.Sqrt(2d * GGliding / (P0 * S * CyGliding));
         }
 
         public void CalcVelocityStall()
         {
-            VelocityStall = Math.Sqrt(2d*GGliding/(P0*S*CyStall));
-           
+            VelocityStall = Math.Sqrt(2d * GGliding / (P0 * S * CyStall));
+
         }
 
         public void CalcKLanding()
         {
-            KLanding = CyLanding/CxLanding;
+            KLanding = CyLanding / CxLanding;
         }
 
         public void CalcVelocityLanding()
         {
-            VelocityLadning = Math.Sqrt(2d*GGliding/(P0*S*CyLanding));
+            VelocityLadning = Math.Sqrt(2d * GGliding / (P0 * S * CyLanding));
         }
 
         public void CalcKMean()
         {
-            KMean = (KGliding + KLanding)*0.5d;
+            KMean = (KGliding + KLanding) * 0.5d;
         }
 
         public void CalcLengthGliding()
         {
-            LengthGliding = KMean*
-                            ((VelocityGliding*VelocityGliding - VelocityLadning*VelocityLadning)/(2d*GFORCE) + Hlanding);
+            LengthGliding = KMean *
+                            ((VelocityGliding * VelocityGliding - VelocityLadning * VelocityLadning) / (2d * GFORCE) + Hlanding);
         }
 
         public void CalcLengthRun()
         {
-            LengthRun = VelocityLadning*VelocityLadning/(GFORCE*(CxRun/CyLanding + FRunFriction*(2 - CyRun/CyLanding)));
+            LengthRun = (VelocityLadning + LongitudinalWind) * (VelocityLadning + LongitudinalWind) / 
+                (GFORCE * (CxRun / CyLanding + FRunFriction * (2d - CyRun / CyLanding)));
 
         }
 
@@ -423,7 +426,7 @@ namespace mainWindow
 
         public void CalcLengthNeeded()
         {
-            LengthNeeded = LengthFullDistance*1.67d;
+            LengthNeeded = LengthFullDistance * 1.67d;
         }
 
         public bool IsLengthNeededLessThanGiven()
@@ -438,7 +441,7 @@ namespace mainWindow
         /// <returns></returns>
         public bool IsVelocityCheck()
         {
-            return (VelocityGliding/VelocityStall > 1.3d) ? true : false;
+            return (VelocityGliding / VelocityStall > 1.3d) ? true : false;
         }
 
         public void CalcAll()
@@ -458,25 +461,6 @@ namespace mainWindow
 
 
         #endregion
-
-
-        //public List<DataPoint> GetDepenedncyPointsPv(String propX, String propY, Double upperBorder)
-        //{
-        //    List<DataPoint> list = new List<DataPoint>();
-        //    ModelData copy = this.Clone();
-
-        //    double oldValue = (double)this.GetType().GetProperty(propX).GetValue(this, null);
-        //    double inc = oldValue / 100;
-        //    this.GetType().GetProperty(propX).SetValue(this, 0);
-        //    for (int i = 0; (double)this.GetType().GetProperty(propX).GetValue(this, null) < upperBorder && i < 400; i++)
-        //    {
-        //        CalcALL();
-        //        list.Add(new DataPoint((double)this.GetType().GetProperty(propX).GetValue(this, null), (double)this.GetType().GetProperty(propY).GetValue(this, null)));
-        //        this.GetType().GetProperty(propX).SetValue(this, (double)this.GetType().GetProperty(propX).GetValue(this, null) + inc);
-        //    }
-        //    this.GetType().GetProperty(propX).SetValue(this, oldValue);
-        //    return list;
-        //}
 
 
         public object Clone()

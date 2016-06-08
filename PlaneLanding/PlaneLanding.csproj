@@ -150,8 +150,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Images\Task.xps" />
     <None Include="app.manifest" />
+    <None Include="bin\Debug\Task.xps" />
+    <None Include="bin\Debug\Theory.xps" />
+    <None Include="bin\Debug\Variants.xps" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -159,6 +161,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Task.xps" />
+    <None Include="Theory.xps" />
+    <None Include="Variants.xps" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -192,6 +197,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\TU204.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Friction.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AirDesnityTable.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PlanesCharacteristics.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

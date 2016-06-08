@@ -17,11 +17,13 @@ namespace mainWindow
 {
     class ViewModel : INotifyPropertyChanged
     {
-        
+
         private DataGrid dataGridTemp;
         private DataGrid dataGridTemp2;
         private DataGrid dataGridFriction;
         private DataGrid dataGridFriction2;
+        private DataGrid dataGridWind;
+        private DataGrid dataGridWind2;
         #region binding stuff
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(String propertyName)
@@ -34,7 +36,7 @@ namespace mainWindow
         }
 
         #endregion
-        
+
         //OxyRender smth
         private PlotModel _plotModel;
 
@@ -42,11 +44,13 @@ namespace mainWindow
         private ModelData _data;
         private PointsDummy _pointsDummyTemp;
         private PointsDummy _pointsDummyFriction;
+        private PointsDummy _pointsDummyWind;
         private List<ModelData> _dataTempPointsList = new List<ModelData>();
         private List<ModelData> _dataFrictionPointsList = new List<ModelData>();
+        private List<ModelData> _dataWindPointsList = new List<ModelData>();
         private PlotController _customPlotController;
 
-     
+
 
 
 
@@ -63,6 +67,12 @@ namespace mainWindow
         {
             get { return _dataFrictionPointsList; }
             set { _dataFrictionPointsList = value; OnPropertyChanged("DataFrictionPointsList"); }
+        }
+
+        public List<ModelData> DataWindPointsList
+        {
+            get { return _dataWindPointsList; }
+            set { _dataWindPointsList = value; OnPropertyChanged("DataWindPointsList"); }
         }
 
 
@@ -92,6 +102,12 @@ namespace mainWindow
             set { _pointsDummyFriction = value; OnPropertyChanged("PointsDummyFriction"); }
         }
 
+        public PointsDummy PointsDummyWind
+        {
+            get { return _pointsDummyWind; }
+            set { _pointsDummyWind = value; OnPropertyChanged("PointsDummyWind"); }
+        }
+
         public PlotController CustomPlotController
         {
             get { return _customPlotController; }
@@ -110,20 +126,9 @@ namespace mainWindow
             _plotModel = new PlotModel();
             _pointsDummyTemp = new PointsDummy();
             _pointsDummyFriction = new PointsDummy();
+            _pointsDummyWind = new PointsDummy();
             //TESTING
             InitData(_data);
-            PointsDummyFriction.ModelData1.FRunFriction = 0.25;
-            PointsDummyFriction.ModelData2.FRunFriction = 0.1;
-            PointsDummyFriction.ModelData3.FRunFriction = 0.07;
-            PointsDummyFriction.ModelData4.FRunFriction = 0.045;
-            PointsDummyFriction.ModelData5.FRunFriction = 0.03;
-
-            PointsDummyTemp.ModelData1.P0 = 1.1455;
-            PointsDummyTemp.ModelData2.P0 = 1.1839;
-            PointsDummyTemp.ModelData3.P0 = 1.225;
-            PointsDummyTemp.ModelData4.P0 = 1.269;
-            PointsDummyTemp.ModelData5.P0 = 1.3163;
-
         }
 
         public DataGrid DataGridTemp
@@ -136,6 +141,12 @@ namespace mainWindow
         {
             get { return dataGridFriction; }
             set { dataGridFriction = value; }
+        }
+
+        public DataGrid DataGridWind
+        {
+            get { return dataGridWind; }
+            set { dataGridWind = value; }
         }
 
 
@@ -151,40 +162,64 @@ namespace mainWindow
             set { dataGridFriction2 = value; }
         }
 
+        public DataGrid DataGridWind2
+        {
+            get { return dataGridWind2; }
+            set { dataGridWind2 = value; }
+        }
+
 
         private void InitData(ModelData data)
         {
             data.Mass = 165d;
             data.LongitudinalWind = 0;
-            data.CrossWind = 0;
+            data.CrossWind = 10;
             data.Hlanding = 15d;
-            data.Temperature = 25; //TODO: is it really needed?
+            data.Temperature = 25;
             data.CyMaxLanding = 2.35d;
             //data.CalcCyGliding(); //get CyGlding
             data.CxGliding = 0.18d;
-         //   data.CalcKGliding(); //calc
+            //   data.CalcKGliding(); //calc
             data.P0 = 1.1839;
             data.S = 350;
-           // data.CalcVelocityGliding(); //calc
+            // data.CalcVelocityGliding(); //calc
             data.Ac = 7; //NOT USED
             data.CyStall = 2.4;
 
             //PP2
-           // data.CalcVelocityStall(); //calc
+            // data.CalcVelocityStall(); //calc
             // make a check
             data.CyLanding = 1.7;
             data.CxLanding = 0.22;
-           // data.CalcKLanding(); //calc
+            // data.CalcKLanding(); //calc
             //data.CalcVelocityLanding(); //calc
             //data.CalcKMean();
-          //  data.CalcLengthGliding();
+            //  data.CalcLengthGliding();
             data.CyRun = 1.05;
             data.CxRun = 0.175;
             data.FRunFriction = 0.25;
-          //  data.CalcLengthRun();
-          //  data.CalcLengthFull();
+            //  data.CalcLengthRun();
+            //  data.CalcLengthFull();
             data.LengthGiven = 3500;
-          //  data.CalcLengthNeeded();
+            //  data.CalcLengthNeeded();
+
+            PointsDummyFriction.ModelData1.FRunFriction = 0.25;
+            PointsDummyFriction.ModelData2.FRunFriction = 0.1;
+            PointsDummyFriction.ModelData3.FRunFriction = 0.07;
+            PointsDummyFriction.ModelData4.FRunFriction = 0.045;
+            PointsDummyFriction.ModelData5.FRunFriction = 0.03;
+
+            PointsDummyTemp.ModelData1.P0 = 1.1455;
+            PointsDummyTemp.ModelData2.P0 = 1.1839;
+            PointsDummyTemp.ModelData3.P0 = 1.225;
+            PointsDummyTemp.ModelData4.P0 = 1.269;
+            PointsDummyTemp.ModelData5.P0 = 1.3163;
+
+            PointsDummyWind.ModelData1.LongitudinalWind = -5d;
+            PointsDummyWind.ModelData2.LongitudinalWind = 0;
+            PointsDummyWind.ModelData3.LongitudinalWind = 5d;
+            PointsDummyWind.ModelData4.LongitudinalWind = 10d;
+            PointsDummyWind.ModelData5.LongitudinalWind = 15d;
 
 
 
@@ -200,10 +235,8 @@ namespace mainWindow
             //    return;
             //}
             _dataTempPointsList.Add((ModelData)_data.Clone());
-            dataGridTemp.ItemsSource = null;
-            dataGridTemp.ItemsSource = DataTempPointsList;
-            dataGridTemp2.ItemsSource = null;
-            dataGridTemp2.ItemsSource = DataTempPointsList;
+            UpdateTempDataGrid();
+
         }
         //TODO:update
         private void AddDataPointForFrictionList()
@@ -213,11 +246,44 @@ namespace mainWindow
             //    return;
             //}
             _dataFrictionPointsList.Add((ModelData)_data.Clone());
+            UpdateFrictionDataGrid();
+
+        }
+
+        private void AddDataPointForWindList()
+        {
+            //if (_data.P.Equals(0))
+            //{
+            //    return;
+            //}
+            _dataWindPointsList.Add((ModelData)_data.Clone());
+            UpdateWindDataGrid();
+        }
+
+        private void UpdateTempDataGrid()
+        {
+            dataGridTemp.ItemsSource = null;
+            dataGridTemp.ItemsSource = DataTempPointsList;
+            dataGridTemp2.ItemsSource = null;
+            dataGridTemp2.ItemsSource = DataTempPointsList;
+        }
+
+        private void UpdateFrictionDataGrid()
+        {
             dataGridFriction.ItemsSource = null;
             dataGridFriction.ItemsSource = DataFrictionPointsList;
             dataGridFriction2.ItemsSource = null;
             dataGridFriction2.ItemsSource = DataFrictionPointsList;
         }
+
+        private void UpdateWindDataGrid()
+        {
+            dataGridWind.ItemsSource = null;
+            dataGridWind.ItemsSource = DataWindPointsList;
+            dataGridWind2.ItemsSource = null;
+            dataGridWind2.ItemsSource = DataWindPointsList;
+        }
+
 
         //PLOTTING METHODS
 
@@ -241,7 +307,7 @@ namespace mainWindow
 
         public enum SortByWhat
         {
-            PO, Friction
+            PO, Friction, Wind
         }
 
 
@@ -255,11 +321,16 @@ namespace mainWindow
             UpdatePlot("FRunFriction", "LengthFullDistance", "F_тр", "L_пос, м", "зависимость L от коэффицента трения", this.DataFrictionPointsList, SortByWhat.Friction);
         }
 
+        public void ShowLWPlot()
+        {
+            UpdatePlot("LongitudinalWind", "LengthFullDistance", "W, м/с", "L_пос, м", "зависимость L от продального ветра", this.DataWindPointsList, SortByWhat.Wind);
+        }
+
 
 
 
         #region fast points calc
-        //retarded piece of code
+
 
         public void Calc5Temp()
         {
@@ -271,7 +342,8 @@ namespace mainWindow
                 PointsDummyTemp.ModelData5.P0,
            };
 
-            List<Double> tempList = new List<double>() {35,25,15,5,-5};
+            //TODO: remove 
+            List<Double> tempList = new List<double>() { 35, 25, 15, 5, -5 };
 
             DataTempPointsList.Clear();
 
@@ -283,12 +355,7 @@ namespace mainWindow
                 PointsDummyTemp.PointsDummyList[i].CalcAll();
                 DataTempPointsList.Add(PointsDummyTemp.PointsDummyList[i]);
             }
-
-            dataGridTemp.ItemsSource = null;
-            dataGridTemp2.ItemsSource = null;
-            dataGridTemp.ItemsSource = DataTempPointsList;
-            dataGridTemp2.ItemsSource = DataTempPointsList;
-
+            UpdateTempDataGrid();
         }
 
         public void Calc5Friction()
@@ -310,16 +377,34 @@ namespace mainWindow
                 PointsDummyFriction.PointsDummyList[i].CalcAll();
                 DataFrictionPointsList.Add(PointsDummyFriction.PointsDummyList[i]);
             }
-
-            dataGridFriction.ItemsSource = null;
-            dataGridFriction.ItemsSource = DataFrictionPointsList;
-            dataGridFriction2.ItemsSource = null;
-            dataGridFriction2.ItemsSource = DataFrictionPointsList;
+            UpdateFrictionDataGrid();
         }
-           
-        
-        
-        
+
+        public void Calc5Wind()
+        {
+            List<Double> tempValues = new List<double>() {
+             PointsDummyWind.ModelData1.LongitudinalWind,
+             PointsDummyWind.ModelData2.LongitudinalWind,
+             PointsDummyWind.ModelData3.LongitudinalWind,
+             PointsDummyWind.ModelData4.LongitudinalWind,
+             PointsDummyWind.ModelData5.LongitudinalWind
+           };
+
+            DataWindPointsList.Clear();
+
+            PointsDummyWind = new PointsDummy(_data);
+            for (int i = 0; i < PointsDummyWind.PointsDummyList.Count; i++)
+            {
+                PointsDummyWind.PointsDummyList[i].LongitudinalWind = tempValues[i];
+                PointsDummyWind.PointsDummyList[i].CalcAll();
+                DataWindPointsList.Add(PointsDummyWind.PointsDummyList[i]);
+            }
+            UpdateWindDataGrid();
+        }
+
+
+
+
         #endregion
 
 
@@ -409,18 +494,22 @@ namespace mainWindow
                 MessageBox.Show("Количество добаленных точек меньше двух");
                 return;
             }
-           
-            /*
-            if (sortByWhat.Equals(SortByWhat.Mass))
+
+
+            if (sortByWhat.Equals(SortByWhat.PO))
             {
-                //сортировка  точек в листе по массе
-                dataPointsList.Sort(delegate (ModelData c1, ModelData c2) { return c1.Mass.CompareTo(c2.Mass); });
+                
+                dataPointsList.Sort(delegate (ModelData c1, ModelData c2) { return c1.Temperature.CompareTo(c2.Temperature); });
             }
-            else if (sortByWhat.Equals(SortByWhat.Speed))
+            else if (sortByWhat.Equals(SortByWhat.Friction))
             {
-                dataPointsList.Sort(delegate (ModelData c1, ModelData c2) { return c1.Velocity.CompareTo(c2.Velocity); });
+                dataPointsList.Sort(delegate (ModelData c1, ModelData c2) { return c1.FRunFriction.CompareTo(c2.FRunFriction); });
             }
-            */
+            else if (sortByWhat.Equals(SortByWhat.Wind))
+            {
+                dataPointsList.Sort(delegate (ModelData c1, ModelData c2) { return c1.LongitudinalWind.CompareTo(c2.LongitudinalWind); });
+            }
+
 
             lineSerie.Points.AddRange(this.GetXYPointsFromAll(param1, param2, dataPointsList));
 
@@ -432,7 +521,7 @@ namespace mainWindow
 
         #region click handlers
 
-        
+
         private ICommand _calcCyGliding;
         private ICommand _calcKGliding;
         private ICommand _calcG;
@@ -452,13 +541,16 @@ namespace mainWindow
 
         private ICommand _addDataPointTemp;
         private ICommand _addDataPointFriction;
+        private ICommand _addDataPointWind;
         private ICommand _showLT;
         private ICommand _showLF;
+        private ICommand _showLW;
         private ICommand _put5Temp;
         private ICommand _put5Friction;
+        private ICommand _put5Wind;
         //private ICommand _put5Speed;
 
-        public ICommand CalcCyGliding => _calcCyGliding ?? (_calcCyGliding = new RelayCommand(delegate {  _data.CalcCyGliding(); }));
+        public ICommand CalcCyGliding => _calcCyGliding ?? (_calcCyGliding = new RelayCommand(delegate { _data.CalcCyGliding(); }));
         public ICommand CalcKGliding => _calcKGliding ?? (_calcKGliding = new RelayCommand(_data.CalcKGliding));
         public ICommand CalcG => _calcG ?? (_calcG = new RelayCommand(_data.CalcG));
         public ICommand CalcVelocityGliding => _calcVelocityGliding ?? (_calcVelocityGliding = new RelayCommand(_data.CalcVelocityGliding));
@@ -470,8 +562,10 @@ namespace mainWindow
         public ICommand CalcLengthRun => _calcLengthRun ?? (_calcLengthRun = new RelayCommand(_data.CalcLengthRun));
         public ICommand CalcLengthFull => _calcLengthFull ?? (_calcLengthFull = new RelayCommand(_data.CalcLengthFull));
         public ICommand CalcLengthNeeded => _calcLengthNeeded ?? (_calcLengthNeeded = new RelayCommand(
-            delegate {_data.CalcLengthFull();
-                         _data.CalcLengthNeeded();
+            delegate
+            {
+                _data.CalcLengthFull();
+                _data.CalcLengthNeeded();
             }));
 
 
@@ -479,17 +573,19 @@ namespace mainWindow
 
         public ICommand ShowLT => _showLT ?? (_showLT = new RelayCommand(ShowLTPlot));
         public ICommand ShowLF => _showLF ?? (_showLF = new RelayCommand(ShowLFPlot));
+        public ICommand ShowLW => _showLW ?? (_showLW = new RelayCommand(ShowLWPlot));
 
 
         public ICommand AddDataPonitTemp => _addDataPointTemp ?? (_addDataPointTemp = new RelayCommand(AddDataPointForTempList));
         public ICommand AddDataPonitFriction => _addDataPointFriction ?? (_addDataPointFriction = new RelayCommand(AddDataPointForFrictionList));
+        public ICommand AddDataPonitWind => _addDataPointWind ?? (_addDataPointWind = new RelayCommand(AddDataPointForWindList));
 
-        
+
         public ICommand Put5Temp => _put5Temp ?? (_put5Temp = new RelayCommand(Calc5Temp));
         public ICommand Put5Friction => _put5Friction ?? (_put5Friction = new RelayCommand(Calc5Friction));
-        //public ICommand Put5Speed => _put5Speed ?? (_put5Speed = new RelayCommand());
-        
-        
+        public ICommand Put5Wind => _put5Wind ?? (_put5Wind = new RelayCommand(Calc5Wind));
+
+
 
         #endregion
     }

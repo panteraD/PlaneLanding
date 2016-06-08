@@ -119,6 +119,12 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Task" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\Task.xps;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\bin\Debug\Task.xps;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Theory" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Theory.xps;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Variants" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Variants.xps;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
