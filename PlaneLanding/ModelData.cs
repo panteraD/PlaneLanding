@@ -414,7 +414,7 @@ namespace mainWindow
 
         public void CalcLengthRun()
         {
-            LengthRun = (VelocityLadning + LongitudinalWind) * (VelocityLadning + LongitudinalWind) / 
+            LengthRun = (VelocityLadning - LongitudinalWind) * (VelocityLadning - LongitudinalWind) / 
                 (GFORCE * (CxRun / CyLanding + FRunFriction * (2d - CyRun / CyLanding)));
 
         }

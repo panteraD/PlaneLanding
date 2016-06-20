@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Icon="Images/plane.ico"
-        Title="Расчет потребной посадочной диcтанции " Height="766" Width="1376">
+        Title="Расчет потребной посадочной диcтанции " Height="750" Width="1360">
 
     <Window.DataContext>
         <dc:ViewModel></dc:ViewModel>
@@ -24,43 +24,58 @@
 
     <Grid x:Name="Main" >
         <TabControl>
+            <TabItem x:Name="Task" Header="Задание">
+                <DocumentViewer x:Name="TaskDocumentViewer">
+
+                </DocumentViewer>
+            </TabItem>
+
+
             <TabItem Header="Вычисления">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MinWidth="400"  />
-                            <ColumnDefinition Width="*" MinWidth="300" />
+                            <!--MinWidth="400"-->
+                            <ColumnDefinition Width="Auto"  />
+                            <ColumnDefinition Width="*" MinWidth="740" />
                         </Grid.ColumnDefinitions>
 
-                        <Border Name="BorderOne" Grid.Column="0"  BorderThickness="3" BorderBrush="BlanchedAlmond">
+                        <Border Grid.Column="0"  BorderThickness="3" BorderBrush="BlanchedAlmond">
                             <pl:Container  >
                                 <!--pl:Container-->
                                 <dc:LabelTextBox x:Name="LtbMass"  Label="Масса, т" Text="{Binding Data.Mass, StringFormat={}0.####}"   Width="Auto" />
                                 <dc:LabelTextBox x:Name="LtbHLanding"  Label="Высота условного препятствия, м" Text="{Binding Data.Hlanding, StringFormat={}0.####}"   Width="Auto" />
                                 <dc:LabelTextBox x:Name="LtbLongitudatWind"  Label="Продольный ветер, м/с" Text="{Binding Data.LongitudinalWind, StringFormat={}0.####}"  Width="Auto"/>
                                 <dc:LabelTextBox x:Name="LtbCrossWind" Label="Поперечный ветер, м/с" Text="{Binding Data.CrossWind, StringFormat={}0.####}"   Width="Auto"/>
-                                <dc:LabelTextBox x:Name="LtbTemperature"  Label="Температура окружающей среды, градусы Цельсия НЕ ИСПОЛЬЗУЕТСЯ" Text="{Binding Data.Temperature, StringFormat={}0.####}"   Width="Auto"/>
+                                <dc:LabelTextBox x:Name="LtbTemperature"  Label="Температура окружающей среды, град" Text="{Binding Data.Temperature, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox x:Name="LtbСyLandingMax"  Label="Максимальный коэффициент подъемной силы при посадке [Су max пос]" Text="{Binding Data.CyMaxLanding, StringFormat={}0.####}"   Width="Auto"/>
-                                <Button  Content="Рассчитать Су пл"   Command="{Binding CalcCyGliding}"/>
+                                <Button  Content="Рассчитать Су пл" HorizontalContentAlignment="Left"  Command="{Binding CalcCyGliding}"/>
                                 <dc:LabelTextBox x:Name="LtbCyGliding"  Label="Коэффициент подъемной силы при планировании [Су пл]" Text="{Binding Data.CyGliding, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond"  Width="Auto" />
                                 <dc:LabelTextBox x:Name="LtbCxGliding"  Label="Коэффициент лобового сопротивления при планировании [Сx пл]"  Text="{Binding Data.CxGliding, StringFormat={}0.####}"   Width="Auto"/>
-                                <Button x:Name="CalcKGliding" Content="Рассчитать Аэродинамическое качество ВС при планировании [К_пл]"   Command="{Binding CalcKGliding}"/>
+                                <Button x:Name="CalcKGliding" Content="Рассчитать Аэродинамическое качество ВС при планировании [К_пл]" HorizontalContentAlignment="Left"  Command="{Binding CalcKGliding}"/>
                                 <dc:LabelTextBox x:Name="LtbKGliding"  Label="Аэродинамическое качество ВС при планировании [К_пл]" Text="{Binding Data.KGliding, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond"  Width="Auto" />
                                 <dc:LabelTextBox x:Name="LtbGForce"  Label="Сила тяжести, действующая на ВС при планировании [G]" Text="{Binding Data.GGliding, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond"  Width="Auto" />
-                                <dc:LabelTextBox x:Name="LtbP0"  Label="Плотность воздуха, кг/м3 [P_0]"  Text="{Binding Data.P0, StringFormat={}0.####}"   Width="Auto"/>
+                                <dc:LabelTextBox x:Name="LtbP0"  Label="Плотность воздуха, кг/м3 [P_o]"  Text="{Binding Data.P0, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox x:Name="LtbS"  Label="Площадь крыла, м2 [S]"  Text="{Binding Data.S, StringFormat={}0.####}"   Width="Auto"/>
-                                <Button x:Name="CalcVelocityGliding" Content="Рассчитать Скорость предпосадочного планирования "   Command="{Binding CalcVelocityGliding}"/>
+                                <Button x:Name="CalcVelocityGliding" Content="Рассчитать Скорость предпосадочного планирования " HorizontalContentAlignment="Left"  Command="{Binding CalcVelocityGliding}"/>
                                 <dc:LabelTextBox Label="Скорость предпосадочного планирования, м/с" Text="{Binding Data.VelocityGliding, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
-                                <Label>ВСТАВИТЬ ПРОВЕРКУ на НГЛС</Label>
+                                <!--<Label>ВСТАВИТЬ ПРОВЕРКУ на НГЛС</Label>-->
                                 <dc:LabelTextBox x:Name="LtbAc"  Label="Угол атаки сваливания [Ac]"  Text="{Binding Data.Ac, StringFormat={}0.####}"   Width="Auto"  Grid.ColumnSpan="2"/>
                                 <dc:LabelTextBox x:Name="LtbCyStall"  Label="Коэффициент подъемной силы сваливания [Cy c]"  Text="{Binding Data.CyStall, StringFormat={}0.####}"   Width="Auto"/>
-                                <Button x:Name="CalcVelocityStall" Content="Рассчитать Скорость сваливания, м/с "   Command="{Binding CalcVelocityStall}"/>
+                                <Button x:Name="CalcVelocityStall" Content="Рассчитать Скорость сваливания, м/с " HorizontalContentAlignment="Left"  Command="{Binding CalcVelocityStall}"/>
                                 <dc:LabelTextBox Label="Скорость сваливания, м/с" Text="{Binding Data.VelocityStall, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
-                                <Label>Проверка: Vпл/Vc > 1,3</Label>
+                                <!--<Label>Проверка: Vпл/Vc > 1,3</Label>-->
+                                    <Label Height="70"></Label>
+                                    <Label Content="Определение предельно допустмого бокового ветра"></Label>
+                                    <dc:LabelTextBox  Label="Поперченый ветер, м/с"  Text="{Binding Data.CrossWind, StringFormat={}0.####}"  Width="Auto"/>
+                                    <dc:LabelTextBox  Label="Коэффициент сцепления"     Width="Auto"/>
+                                    <dc:LabelTextBox  Label="Предельно допустимое значение бокового ветра, м/с"     Width="Auto"/>
+                         
                             </pl:Container>
+                            
                         </Border>
 
-                        <Border Grid.Column="1"   BorderThickness="3" BorderBrush="BlanchedAlmond" HorizontalAlignment="Stretch">
+                        <Border Grid.Column="1"   BorderThickness="3" BorderBrush="BlanchedAlmond" >
                             <Grid x:Name="DataGridsHolder">
 
                                 <Grid.RowDefinitions>
@@ -68,25 +83,25 @@
                                     <RowDefinition Height="*"></RowDefinition>
 
                                 </Grid.RowDefinitions>
-                                <Border  Grid.Row="0" BorderThickness="3" BorderBrush="Black">
+                                <Border  Grid.Row="0" BorderThickness="3" BorderBrush="BlanchedAlmond">
                                     <pl:Container >
-                                        <dc:LabelTextBox   Label="Коэффициент подъемной силы при посадочном угле атаки (7-10º) [Cy Пос]"  Text="{Binding Data.CyLanding, StringFormat={}0.####}"   Width="Auto" />
+                                        <dc:LabelTextBox x:Name="RootLTB"  Label="Коэффициент подъемной силы при посадочном угле атаки (7-10º) [Cy Пос]"  Text="{Binding Data.CyLanding, StringFormat={}0.####}"   Width="Auto" />
                                         <dc:LabelTextBox   Label="Коэффициент лобового сопротивления при посадке [Сx пос]"  Text="{Binding Data.CxLanding, StringFormat={}0.####}"   Width="Auto"/>
-                                        <Button x:Name="CalcKLanding" Content="Рассчитать Аэродинамическое качество ВС при посадке [Kпос]"   Command="{Binding CalcKLanding}"/>
+                                        <Button x:Name="CalcKLanding"  Content="Рассчитать Аэродинамическое качество ВС при посадке [Kпос]" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Width="560" Command="{Binding CalcKLanding}"/>
                                         <dc:LabelTextBox Label="Аэродинамическое качество ВС при посадке" Text="{Binding Data.KLanding, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
-                                        <Button x:Name="CalcVelocityLanding" Content="Рассчитать Vпос"   Command="{Binding CalcVelocityLanding}"/>
+                                        <Button x:Name="CalcVelocityLanding" Content="Рассчитать Vпос"  HorizontalContentAlignment="Left" HorizontalAlignment="Left" Width="560" Command="{Binding CalcVelocityLanding}"/>
                                         <dc:LabelTextBox Label="Посадочная скорость ВС, м/с" Text="{Binding Data.VelocityLadning, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
-                                        <Button x:Name="CalcKMean" Content="Рассчитать К_ср"   Command="{Binding CalcKMean}"/>
+                                        <Button x:Name="CalcKMean" Content="Рассчитать К_ср" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Width="560"  Command="{Binding CalcKMean}" />
                                         <dc:LabelTextBox Label="Среднее аэродинамическое качество ВС на участке планирования - парашютирования" Text="{Binding Data.KMean, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
-                                        <Button x:Name="CalcLenthGlidinh" Content="Рассчитать Lв пос "   Command="{Binding CalcLengthGliding}"/>
+                                        <Button x:Name="CalcLenthGlidinh" Content="Рассчитать Lв пос " HorizontalContentAlignment="Left" HorizontalAlignment="Left" Width="560"  Command="{Binding CalcLengthGliding}" />
                                         <dc:LabelTextBox Label="Дистанция воздушного посадочного участка, м" Text="{Binding Data.LengthGliding, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
                                         <dc:LabelTextBox  Label="Коэффициент подъемной силы при пробеге [Су пр]" Text="{Binding Data.CyRun, StringFormat={}0.####}"   Width="Auto"/>
                                         <dc:LabelTextBox  Label="Коэффициент лобового сопротивления при пробеге [Сx пр]" Text="{Binding Data.CxRun, StringFormat={}0.####}"   Width="Auto"/>
-                                        <dc:LabelTextBox  Label="Коэффицент трения у ВПП" Text="{Binding Data.FRunFriction, StringFormat={}0.####}"   Width="Auto"/>
-                                        <Button x:Name="CalcLengthRun" Content="Рассчитать Длинку пробега [Lпр, м]"   Command="{Binding CalcLengthRun}"/>
+                                        <dc:LabelTextBox  Label="Коэффицент трения у ВПП" Text="{Binding Data.FRunFriction, StringFormat={}0.####}"   Width="Auto" />
+                                        <Button x:Name="CalcLengthRun" Content="Рассчитать Длинку пробега [Lпр, м]"  HorizontalContentAlignment="Left" HorizontalAlignment="Left" Width="560" Command="{Binding CalcLengthRun}" />
                                         <dc:LabelTextBox Label="Длина пробега, м" Text="{Binding Data.LengthRun, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
                                         <dc:LabelTextBox  Label="Располагаемая посадочная дистанция, м [L пос]" Text="{Binding Data.LengthGiven, StringFormat={}0.####}"   Width="Auto"/>
-                                        <Button x:Name="CalcLengthNeeded" Content="Рассчитать Потребная посадочная дистанция, м"   Command="{Binding CalcLengthNeeded}"/>
+                                        <Button x:Name="CalcLengthNeeded" Content="Рассчитать Потребная посадочная дистанция, м"  HorizontalContentAlignment="Left" HorizontalAlignment="Left" Width="560" Command="{Binding CalcLengthNeeded}" />
                                         <dc:LabelTextBox Label="Посадочная дистанция, м" Text="{Binding Data.LengthFullDistance, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
                                         <dc:LabelTextBox Label="Потребная посадочная дистанция, м" Text="{Binding Data.LengthNeeded, StringFormat={}0.####}" ReadOnly="True" TextBoxBackGround="BlanchedAlmond" />
                                     </pl:Container>
@@ -94,10 +109,7 @@
 
 
                                 <Grid Grid.Row="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="200"></RowDefinition>
-                                    </Grid.RowDefinitions>
+
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -105,41 +117,51 @@
                                     </Grid.ColumnDefinitions>
 
 
+                                    <Border BorderThickness="3" BorderBrush="BlanchedAlmond" Grid.Column="0">
+                                        <StackPanel>
+                                            <Button Content="Добавить точку к графику Температуры" Command="{Binding AddDataPonitTemp}" Height="30" Margin="5" ></Button>
+                                            <DataGrid x:Name="dataGridTemp"  AutoGenerateColumns="False" ColumnHeaderHeight="30"  MinColumnWidth="20" SelectionMode="Single" SelectionUnit="FullRow">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="T" IsReadOnly="True" Binding="{Binding Path= Temperature, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="P_0" IsReadOnly="True" Binding="{Binding Path=P0, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пр" IsReadOnly="True" Binding="{Binding Path=LengthRun, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthFullDistance, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </Border>
 
-                                    <Button Content="Добавить точку к графику Температуры" Command="{Binding AddDataPonitTemp}" Grid.Column="0" Grid.Row="0"></Button>
-                                    <DataGrid x:Name="dataGridTemp"  AutoGenerateColumns="False" ColumnHeaderHeight="30"  MinColumnWidth="40" SelectionMode="Single" SelectionUnit="FullRow"  Grid.Column="0" Grid.Row="1">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="T" IsReadOnly="True" Binding="{Binding Path= Temperature, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="P_0" IsReadOnly="True" Binding="{Binding Path=P0, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пр" IsReadOnly="True" Binding="{Binding Path=LengthRun, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthFullDistance, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                    <Button Content="Добавить точку к графику Трения" Command="{Binding AddDataPonitFriction}" Grid.Column="1" Grid.Row="0"></Button>
-                                    <DataGrid x:Name="dataGridFriction"  AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="40" SelectionMode="Single" SelectionUnit="FullRow" Grid.Column="1" Grid.Row="1" >
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="F_тр" IsReadOnly="True" Binding="{Binding Path=FRunFriction, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пр" IsReadOnly="True" Binding="{Binding Path=LengthRun, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthFullDistance, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                    <Button Content="Добавить точку к графику Продольного ветра" Command="{Binding AddDataPonitWind}" Grid.Column="2" Grid.Row="0"></Button>
-                                    <DataGrid x:Name="dataGridWind"  AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="40" SelectionMode="Single" SelectionUnit="FullRow" Grid.Column="2" Grid.Row="1" >
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="W_x" IsReadOnly="True" Binding="{Binding Path=LongitudinalWind, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пр" IsReadOnly="True" Binding="{Binding Path=LengthRun, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthFullDistance, StringFormat={}0.####}"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                    
+                                    <Border BorderThickness="3" BorderBrush="BlanchedAlmond" Grid.Column="1">
+                                        <StackPanel>
+                                            <Button Content="Добавить точку к графику Трения" Command="{Binding AddDataPonitFriction}" Height="30" Margin="5" ></Button>
+                                            <DataGrid x:Name="dataGridFriction"  AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="45" SelectionMode="Single" SelectionUnit="FullRow"  >
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="F_тр" IsReadOnly="True" Binding="{Binding Path=FRunFriction, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пр" IsReadOnly="True" Binding="{Binding Path=LengthRun, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthFullDistance, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border BorderThickness="3" BorderBrush="BlanchedAlmond" Grid.Column="2">
+                                        <StackPanel>
+                                            <Button Content="Добавить точку к графику Продольного ветра" Command="{Binding AddDataPonitWind}" Height="30" Margin="5"/>
+                                            <DataGrid x:Name="dataGridWind"  AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="45" SelectionMode="Single" SelectionUnit="FullRow" Grid.Column="2" Grid.Row="1" >
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="W_x" IsReadOnly="True" Binding="{Binding Path=LongitudinalWind, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пр" IsReadOnly="True" Binding="{Binding Path=LengthRun, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthFullDistance, StringFormat={}0.####}"></DataGridTextColumn>
+                                                    <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </Border>
                                 </Grid>
-
                             </Grid>
                         </Border>
                     </Grid>
@@ -157,9 +179,9 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Grid.ColumnSpan="6">
                             <Label Content="Исходные данные"  FontSize="20" FontWeight="DemiBold"></Label>
@@ -170,7 +192,7 @@
                                 <dc:LabelTextBox  Label="Высота условного препятствия, м" Text="{Binding Data.Hlanding, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Продольный ветер, м/с" Text="{Binding Data.LongitudinalWind, StringFormat={}0.####}"  Width="Auto"/>
                                 <dc:LabelTextBox  Label="Поперечный ветер, м/с" Text="{Binding Data.CrossWind, StringFormat={}0.####}"   Width="Auto"/>
-                                <dc:LabelTextBox  Label="Температура окружающей среды, градусы Цельсия НЕ ИСПОЛЬЗУЕТСЯ" Text="{Binding Data.Temperature, StringFormat={}0.####}"   Width="Auto"/>
+                                <dc:LabelTextBox  Label="Температура окружающей среды, градусы Цельсия" Text="{Binding Data.Temperature, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Максимальный коэффициент подъемной силы при посадке [Су max пос]" Text="{Binding Data.CyMaxLanding, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Коэффициент лобового сопротивления при планировании [Сx пл]"  Text="{Binding Data.CxGliding, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Плотность воздуха, кг/м3 [P_0]"  Text="{Binding Data.P0, StringFormat={}0.####}"   Width="Auto"/>
@@ -180,7 +202,7 @@
                         <Border Grid.Column="1" Grid.Row="1"  >
                             <pl:Container >
                                 <dc:LabelTextBox  Label="Площадь крыла, м2 [S]"  Text="{Binding Data.S, StringFormat={}0.####}"   Width="Auto"/>
-                                <dc:LabelTextBox  Label="Угол атаки сваливания [Ac]"  Text="{Binding Data.Ac, StringFormat={}0.####}"   Width="Auto"  Grid.ColumnSpan="2"/>
+                                <dc:LabelTextBox  Label="Угол атаки сваливания [Ac]"  Text="{Binding Data.Ac, StringFormat={}0.####}"   Width="Auto"  />
                                 <dc:LabelTextBox  Label="Коэффициент подъемной силы сваливания [Cy c]"  Text="{Binding Data.CyStall, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Коэффициент подъемной силы при посадочном угле атаки (7-10º) [Cy Пос]"  Text="{Binding Data.CyLanding, StringFormat={}0.####}"   Width="Auto" />
                                 <dc:LabelTextBox  Label="Коэффициент лобового сопротивления при посадке [Сx пос]"  Text="{Binding Data.CxLanding, StringFormat={}0.####}"   Width="Auto"/>
@@ -199,59 +221,51 @@
 
 
 
-                        <Border Grid.Row="2" Grid.ColumnSpan="6">
+                        <Border Grid.Row="2" Grid.ColumnSpan="6" Grid.Column="0">
                             <Label Content="Быстрое вычисление точек" FontSize="20" FontWeight="DemiBold"></Label>
                         </Border>
-                        <Border Grid.Column="0" Grid.Row="3">
+                        <Border Grid.Row="3"  Grid.ColumnSpan="6" Grid.Column="0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <pl:Container  Grid.Column="0">
-                                    <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData1.P0, StringFormat={}0.####}"  Width="Auto"/>
-                                    <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData2.P0, StringFormat={}0.####}"  Width="Auto"/>
-                                    <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData3.P0, StringFormat={}0.####}"  Width="Auto"/>
-                                    <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData4.P0, StringFormat={}0.####}"  Width="Auto"/>
-                                    <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData5.P0, StringFormat={}0.####}"  Width="Auto"/>
-                                    <Button Height="30" Content="Рассчитать точки" Command="{Binding Put5Temp}"></Button>
-                                </pl:Container>
-
-                                <pl:Container  Grid.Column="1">
-                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData1.FRunFriction, StringFormat={}0.####}"  />
-                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData2.FRunFriction, StringFormat={}0.####}"    />
-                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData3.FRunFriction, StringFormat={}0.####}"   />
-                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData4.FRunFriction, StringFormat={}0.####}"   />
-                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData5.FRunFriction, StringFormat={}0.####}"     />
-                                    <Button Height="30" Content="Рассчитать точки" Command="{Binding Put5Friction}"></Button>
-                                </pl:Container>
-
-                                <pl:Container  Grid.Column="2">
-                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData1.LongitudinalWind, StringFormat={}0.####}"  />
-                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData2.LongitudinalWind, StringFormat={}0.####}"  />
-                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData3.LongitudinalWind, StringFormat={}0.####}"  />
-                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData4.LongitudinalWind, StringFormat={}0.####}"  />
-                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData5.LongitudinalWind, StringFormat={}0.####}"  />
-                                   
-                                    <Button Height="30" Content="Рассчитать точки" Command="{Binding Put5Wind}"></Button>
-                                </pl:Container>
-                            </Grid>
-                        </Border>
-
-                        <Border Grid.Column="1"  Grid.Row="3" BorderThickness="3" BorderBrush="BlanchedAlmond" HorizontalAlignment="Stretch" >
-                            <Grid >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition ></ColumnDefinition>
                                     <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Label Content="Точки для посторения к графика зависимости L от температуры"  Grid.Column="0" Grid.Row="0"></Label>
-                                <DataGrid x:Name="dataGridTemp2"  AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="20" SelectionMode="Single" SelectionUnit="FullRow"  Grid.Column="0" Grid.Row="1">
+                                </Grid.RowDefinitions >
+                                <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+                                    <pl:Container Grid.Column="0" Grid.Row="0">
+                                        <dc:LabelTextBox   Label="Температура" Text="{Binding PointsDummyTemp.ModelData1.Temperature, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Температура" Text="{Binding PointsDummyTemp.ModelData2.Temperature, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Температура" Text="{Binding PointsDummyTemp.ModelData3.Temperature, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Температура" Text="{Binding PointsDummyTemp.ModelData4.Temperature, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Температура" Text="{Binding PointsDummyTemp.ModelData5.Temperature, StringFormat={}0.####}"  Width="Auto"/>
+                                    </pl:Container>
+                                    <pl:Container  Grid.Column="1" Grid.Row="0">
+                                        <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData1.P0, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData2.P0, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData3.P0, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData4.P0, StringFormat={}0.####}"  Width="Auto"/>
+                                        <dc:LabelTextBox   Label="Плотность воздуха" Text="{Binding PointsDummyTemp.ModelData5.P0, StringFormat={}0.####}"  Width="Auto"/>
+                                    </pl:Container>
+                                    <Button Grid.Row="1" Grid.ColumnSpan="2" Height="30" Content="Рассчитать точки" Command="{Binding Put5Temp}"></Button>
+                                </Grid>
+
+
+                                <Label Content="Точки для посторения к графика зависимости L от температуры" Grid.Row="1"  Grid.Column="0" ></Label>
+                                <DataGrid x:Name="dataGridTemp2" Grid.Column="0" Grid.Row="2" AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="20" SelectionMode="Single" SelectionUnit="FullRow"  >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="T" IsReadOnly="True" Binding="{Binding Path= Temperature, StringFormat={}0.####}"></DataGridTextColumn>
                                         <DataGridTextColumn Header="P_0" IsReadOnly="True" Binding="{Binding Path=P0, StringFormat={}0.####}"></DataGridTextColumn>
@@ -261,8 +275,20 @@
                                         <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Label Content="Точки для построения графика зависимости L от коэффицента трения" Grid.Column="1" Grid.Row="0"></Label>
-                                <DataGrid x:Name="dataGridFriction2" AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="60" SelectionMode="Single" SelectionUnit="FullRow" Grid.Column="1"  Grid.Row="1">
+
+                                <pl:Container  Grid.Column="1">
+                                    <Label Height="26"></Label>
+                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData1.FRunFriction, StringFormat={}0.####}"  />
+                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData2.FRunFriction, StringFormat={}0.####}"    />
+                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData3.FRunFriction, StringFormat={}0.####}"   />
+                                    <dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData4.FRunFriction, StringFormat={}0.####}"   />
+
+                                    <!--<dc:LabelTextBox  Label="Коэффиценит трения" Text="{Binding PointsDummyFriction.ModelData5.FRunFriction, StringFormat={}0.####}"     />-->
+                                    <Button Height="30" Content="Рассчитать точки" Command="{Binding Put5Friction}"></Button>
+                                </pl:Container>
+
+                                <Label Content="Точки для построения графика зависимости L от коэффицента трения" Grid.Column="1" Grid.Row="1"></Label>
+                                <DataGrid x:Name="dataGridFriction2" Grid.Column="1"  Grid.Row="2" AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="60" SelectionMode="Single" SelectionUnit="FullRow" >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="F_тр" IsReadOnly="True" Binding="{Binding Path=FRunFriction, StringFormat={}0.####}"></DataGridTextColumn>
                                         <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
@@ -272,8 +298,18 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
 
-                                <Label Content="Точки для построения графика зависимости L от W" Grid.Column="2" Grid.Row="0"></Label>
-                                <DataGrid x:Name="dataGridWind2" AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="60" SelectionMode="Single" SelectionUnit="FullRow" Grid.Column="2"  Grid.Row="1">
+                                <pl:Container  Grid.Column="2">
+                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData1.LongitudinalWind, StringFormat={}0.####}"  />
+                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData2.LongitudinalWind, StringFormat={}0.####}"  />
+                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData3.LongitudinalWind, StringFormat={}0.####}"  />
+                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData4.LongitudinalWind, StringFormat={}0.####}"  />
+                                    <dc:LabelTextBox  Label="Значение продольного ветра" Text="{Binding PointsDummyWind.ModelData5.LongitudinalWind, StringFormat={}0.####}"  />
+
+                                    <Button Height="30" Content="Рассчитать точки" Command="{Binding Put5Wind}"></Button>
+                                </pl:Container>
+
+                                <Label Content="Точки для построения графика зависимости L от W" Grid.Column="2" Grid.Row="1"></Label>
+                                <DataGrid x:Name="dataGridWind2" Grid.Column="2"  Grid.Row="2" AutoGenerateColumns="False" ColumnHeaderHeight="30" ColumnWidth="*" MinColumnWidth="60" SelectionMode="Single" SelectionUnit="FullRow" >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="W_x" IsReadOnly="True" Binding="{Binding Path=LongitudinalWind, StringFormat={}0.####}"></DataGridTextColumn>
                                         <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthGliding, StringFormat={}0.####}"></DataGridTextColumn>
@@ -281,14 +317,11 @@
                                         <DataGridTextColumn Header="L_пос" IsReadOnly="True" Binding="{Binding Path=LengthFullDistance, StringFormat={}0.####}"></DataGridTextColumn>
                                         <DataGridTextColumn Header="L_потр" IsReadOnly="True" Binding="{Binding Path=LengthNeeded, StringFormat={}0.####}"></DataGridTextColumn>
                                     </DataGrid.Columns>
-
                                 </DataGrid>
                             </Grid>
                         </Border>
                     </Grid>
-
                 </Grid>
-
             </TabItem>
 
             <TabItem Header="Графики">
@@ -306,8 +339,8 @@
                         </Grid.ColumnDefinitions>
                         <Button Content="Зависимость L от температуры" Command="{Binding ShowLT}"  Width="300" Grid.Column="0" ></Button>
 
-                        <Button Content="Зависимость L от коэффицента сцепления" Command="{Binding ShowLF}"  Width="300"  Grid.Column="1"  ></Button>
-                        <Button Content="Зависимость L от коэффицента W" Command="{Binding ShowLW}"  Width="300"  Grid.Column="2"  ></Button>
+                        <Button Content="Зависимость L от коэффицента трения" Command="{Binding ShowLF}"  Width="300"  Grid.Column="1"  ></Button>
+                        <Button Content="Зависимость L от значения продольного ветра" Command="{Binding ShowLW}"  Width="300"  Grid.Column="2"  ></Button>
                     </Grid>
 
                     <Grid Grid.Row="1" >
@@ -338,22 +371,13 @@
 
 
 
-            <TabItem x:Name="Task" Header="Задание">
-                <DocumentViewer x:Name="TaskDocumentViewer">
 
-                </DocumentViewer>
-            </TabItem>
-            <TabItem Header="Варианты">
-                <DocumentViewer x:Name="VariantsDocumentViewer">
-
-                </DocumentViewer>
-            </TabItem>
             <TabItem Header="Теория">
                 <DocumentViewer x:Name="TheoryDocumentViewer">
 
                 </DocumentViewer>
             </TabItem>
-            <TabItem Header="Справночная информация">
+            <TabItem Header="Справочная информация">
                 <DocumentViewer x:Name="InfoTablesDocumentViewer">
 
                 </DocumentViewer>

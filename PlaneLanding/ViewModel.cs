@@ -215,6 +215,12 @@ namespace mainWindow
             PointsDummyTemp.ModelData4.P0 = 1.269;
             PointsDummyTemp.ModelData5.P0 = 1.3163;
 
+            PointsDummyTemp.ModelData1.Temperature = 35;
+            PointsDummyTemp.ModelData2.Temperature = 25;
+            PointsDummyTemp.ModelData3.Temperature = 15;
+            PointsDummyTemp.ModelData4.Temperature = 5;
+            PointsDummyTemp.ModelData5.Temperature = -5;
+
             PointsDummyWind.ModelData1.LongitudinalWind = -5d;
             PointsDummyWind.ModelData2.LongitudinalWind = 0;
             PointsDummyWind.ModelData3.LongitudinalWind = 5d;
@@ -313,7 +319,7 @@ namespace mainWindow
 
         public void ShowLTPlot()
         {
-            UpdatePlot("Temperature", "LengthFullDistance", "T, град", "L_пос, м", "зависимость L от температуры(плотности)", this.DataTempPointsList, SortByWhat.PO);
+            UpdatePlot("Temperature", "LengthFullDistance", "T, град", "L_пос, м", "зависимость L от температуры", this.DataTempPointsList, SortByWhat.PO);
         }
 
         public void ShowLFPlot()
@@ -323,7 +329,7 @@ namespace mainWindow
 
         public void ShowLWPlot()
         {
-            UpdatePlot("LongitudinalWind", "LengthFullDistance", "W, м/с", "L_пос, м", "зависимость L от продального ветра", this.DataWindPointsList, SortByWhat.Wind);
+            UpdatePlot("LongitudinalWind", "LengthFullDistance", "W, м/с", "L_пос, м", "зависимость L от продольного ветра", this.DataWindPointsList, SortByWhat.Wind);
         }
 
 
@@ -334,7 +340,7 @@ namespace mainWindow
 
         public void Calc5Temp()
         {
-            List<Double> tempValues = new List<double>()
+            List<Double> pressureCopy = new List<double>()
             { PointsDummyTemp.ModelData1.P0,
                 PointsDummyTemp.ModelData2.P0,
                 PointsDummyTemp.ModelData3.P0,
@@ -342,16 +348,23 @@ namespace mainWindow
                 PointsDummyTemp.ModelData5.P0,
            };
 
-            //TODO: remove 
-            List<Double> tempList = new List<double>() { 35, 25, 15, 5, -5 };
+
+            List<Double> tempCopy = new List<double>()
+            {
+                PointsDummyTemp.ModelData1.Temperature,
+                PointsDummyTemp.ModelData2.Temperature,
+                PointsDummyTemp.ModelData3.Temperature,
+                PointsDummyTemp.ModelData4.Temperature,
+                PointsDummyTemp.ModelData5.Temperature,
+            };
 
             DataTempPointsList.Clear();
 
             PointsDummyTemp = new PointsDummy(_data);
             for (int i = 0; i < PointsDummyTemp.PointsDummyList.Count; i++)
             {
-                PointsDummyTemp.PointsDummyList[i].P0 = tempValues[i];
-                PointsDummyTemp.PointsDummyList[i].Temperature = tempList[i];
+                PointsDummyTemp.PointsDummyList[i].P0 = pressureCopy[i];
+                PointsDummyTemp.PointsDummyList[i].Temperature = tempCopy[i];
                 PointsDummyTemp.PointsDummyList[i].CalcAll();
                 DataTempPointsList.Add(PointsDummyTemp.PointsDummyList[i]);
             }
@@ -365,13 +378,13 @@ namespace mainWindow
                 PointsDummyFriction.ModelData2.FRunFriction,
                 PointsDummyFriction.ModelData3.FRunFriction,
                 PointsDummyFriction.ModelData4.FRunFriction,
-                PointsDummyFriction.ModelData5.FRunFriction,
+                //PointsDummyFriction.ModelData5.FRunFriction,
            };
 
             DataFrictionPointsList.Clear();
 
             PointsDummyFriction = new PointsDummy(_data);
-            for (int i = 0; i < PointsDummyFriction.PointsDummyList.Count; i++)
+            for (int i = 0; i < tempValues.Count; i++)
             {
                 PointsDummyFriction.PointsDummyList[i].FRunFriction = tempValues[i];
                 PointsDummyFriction.PointsDummyList[i].CalcAll();
@@ -482,7 +495,7 @@ namespace mainWindow
                 CanTrackerInterpolatePoints = true,
                 Title = legend,
                 //default if false
-                Smooth = true,
+                //Smooth = true,
 
                 MarkerType = MarkerType.Circle,
             };
