@@ -435,10 +435,7 @@ namespace mainWindow
         }
 
 
-        /// <summary>
-        /// Проверка: Vпл/Vc > 1,3
-        /// </summary>
-        /// <returns></returns>
+       
         public bool IsVelocityCheck()
         {
             return (VelocityGliding / VelocityStall > 1.3d) ? true : false;

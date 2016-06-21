@@ -319,17 +319,17 @@ namespace mainWindow
 
         public void ShowLTPlot()
         {
-            UpdatePlot("Temperature", "LengthFullDistance", "T, град", "L_пос, м", "зависимость L от температуры", this.DataTempPointsList, SortByWhat.PO);
+            UpdatePlot("Temperature", "LengthFullDistance", "T, град", "Lпос, м", "зависимость L от температуры", this.DataTempPointsList, SortByWhat.PO);
         }
 
         public void ShowLFPlot()
         {
-            UpdatePlot("FRunFriction", "LengthFullDistance", "F_тр", "L_пос, м", "зависимость L от коэффицента трения", this.DataFrictionPointsList, SortByWhat.Friction);
+            UpdatePlot("FRunFriction", "LengthFullDistance", "F_тр", "Lпос, м", "зависимость L от коэффицента трения", this.DataFrictionPointsList, SortByWhat.Friction);
         }
 
         public void ShowLWPlot()
         {
-            UpdatePlot("LongitudinalWind", "LengthFullDistance", "W, м/с", "L_пос, м", "зависимость L от продольного ветра", this.DataWindPointsList, SortByWhat.Wind);
+            UpdatePlot("LongitudinalWind", "LengthFullDistance", "W, м/с", "Lпос, м", "зависимость L от продольного ветра", this.DataWindPointsList, SortByWhat.Wind);
         }
 
 
@@ -450,6 +450,8 @@ namespace mainWindow
             var yAxis = new OxyPlot.Axes.LinearAxis()
             {
                 Position = AxisPosition.Left,
+                AxisTitleDistance = 11,
+                
                 Title = yAxisTitle,
                 TitlePosition = 1,
                 TitleFontSize = 20,
@@ -470,10 +472,8 @@ namespace mainWindow
             PlotModel.Axes.Add(xAxis);
             PlotModel.Axes.Add(yAxis);
 
-            //PlotModel.Axes.Add(new LinearAxis(AxisPosition.Left, "X") { Title = xAxisTitle });
-            //PlotModel.Axes.Add(new LinearAxis(AxisPosition.Bottom, "Y") { Title = yAxisTitle });
 
-            PlotModel.PlotMargins = new OxyThickness(40, 40, 40, 40);
+            PlotModel.PlotMargins = new OxyThickness(60, 40, 40,50);
         }
 
 
@@ -528,6 +528,8 @@ namespace mainWindow
 
 
             PlotModel.Series.Add(lineSerie);
+       
+            
         }
 
         #endregion
