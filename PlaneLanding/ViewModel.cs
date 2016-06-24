@@ -214,12 +214,16 @@ namespace mainWindow
             PointsDummyTemp.ModelData3.P0 = 1.225;
             PointsDummyTemp.ModelData4.P0 = 1.269;
             PointsDummyTemp.ModelData5.P0 = 1.3163;
+            PointsDummyTemp.ModelData6.P0 = 1.3673;
+            PointsDummyTemp.ModelData7.P0 = 1.4224;
 
             PointsDummyTemp.ModelData1.Temperature = 35;
             PointsDummyTemp.ModelData2.Temperature = 25;
             PointsDummyTemp.ModelData3.Temperature = 15;
             PointsDummyTemp.ModelData4.Temperature = 5;
             PointsDummyTemp.ModelData5.Temperature = -5;
+            PointsDummyTemp.ModelData6.Temperature = -15;
+            PointsDummyTemp.ModelData7.Temperature = -25;
 
             PointsDummyWind.ModelData1.LongitudinalWind = -5d;
             PointsDummyWind.ModelData2.LongitudinalWind = 0;
@@ -338,7 +342,7 @@ namespace mainWindow
         #region fast points calc
 
 
-        public void Calc5Temp()
+        public void Calc7Temp()
         {
             List<Double> pressureCopy = new List<double>()
             { PointsDummyTemp.ModelData1.P0,
@@ -346,6 +350,8 @@ namespace mainWindow
                 PointsDummyTemp.ModelData3.P0,
                 PointsDummyTemp.ModelData4.P0,
                 PointsDummyTemp.ModelData5.P0,
+                PointsDummyTemp.ModelData6.P0,
+                PointsDummyTemp.ModelData7.P0,
            };
 
 
@@ -356,6 +362,8 @@ namespace mainWindow
                 PointsDummyTemp.ModelData3.Temperature,
                 PointsDummyTemp.ModelData4.Temperature,
                 PointsDummyTemp.ModelData5.Temperature,
+                PointsDummyTemp.ModelData6.Temperature,
+                PointsDummyTemp.ModelData7.Temperature,
             };
 
             DataTempPointsList.Clear();
@@ -406,7 +414,7 @@ namespace mainWindow
             DataWindPointsList.Clear();
 
             PointsDummyWind = new PointsDummy(_data);
-            for (int i = 0; i < PointsDummyWind.PointsDummyList.Count; i++)
+            for (int i = 0; i < tempValues.Count; i++)
             {
                 PointsDummyWind.PointsDummyList[i].LongitudinalWind = tempValues[i];
                 PointsDummyWind.PointsDummyList[i].CalcAll();
@@ -596,7 +604,7 @@ namespace mainWindow
         public ICommand AddDataPonitWind => _addDataPointWind ?? (_addDataPointWind = new RelayCommand(AddDataPointForWindList));
 
 
-        public ICommand Put5Temp => _put5Temp ?? (_put5Temp = new RelayCommand(Calc5Temp));
+        public ICommand Put5Temp => _put5Temp ?? (_put5Temp = new RelayCommand(Calc7Temp));
         public ICommand Put5Friction => _put5Friction ?? (_put5Friction = new RelayCommand(Calc5Friction));
         public ICommand Put5Wind => _put5Wind ?? (_put5Wind = new RelayCommand(Calc5Wind));
 

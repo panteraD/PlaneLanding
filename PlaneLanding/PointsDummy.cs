@@ -23,16 +23,20 @@ namespace mainWindow
             _modelData3 = new ModelData();
             _modelData4 = new ModelData();
             _modelData5 = new ModelData();
-            _pointsDummyList = new List<ModelData>() {_modelData1, _modelData2, _modelData3, _modelData4, _modelData5};
+            _modelData6 = new ModelData();
+            _modelData7 = new ModelData();
+            _pointsDummyList = new List<ModelData>() {_modelData1, _modelData2, _modelData3, _modelData4, _modelData5, _modelData6 , _modelData7 };
         }
 
-        public PointsDummy(ModelData modelData1, ModelData modelData2, ModelData modelData3, ModelData modelData4, ModelData modelData5)
+        public PointsDummy(ModelData modelData1, ModelData modelData2, ModelData modelData3, ModelData modelData4, ModelData modelData5, ModelData modelData6,  ModelData modelData7)
         {
             _modelData1 = modelData1;
             _modelData2 = modelData2;
             _modelData3 = modelData3;
             _modelData4 = modelData4;
             _modelData5 = modelData5;
+            _modelData7 = modelData6;
+            _modelData6 = modelData7;
             _pointsDummyList = new List<ModelData>() { modelData1, modelData2, modelData3, modelData4, modelData5 };
         }
 
@@ -43,7 +47,10 @@ namespace mainWindow
             _modelData3 = (ModelData)data.Clone();
             _modelData4 = (ModelData)data.Clone();
             _modelData5 = (ModelData)data.Clone();
-            _pointsDummyList = new List<ModelData>() { _modelData1, _modelData2, _modelData3, _modelData4, _modelData5 };
+            _modelData6 = (ModelData)data.Clone();
+            _modelData7 = (ModelData)data.Clone();
+
+            _pointsDummyList = new List<ModelData>() { _modelData1, _modelData2, _modelData3, _modelData4, _modelData5, _modelData6 , _modelData7 };
         }
 
        
@@ -59,6 +66,8 @@ namespace mainWindow
         private ModelData _modelData3;
         private ModelData _modelData4;
         private ModelData _modelData5;
+        private ModelData _modelData6;
+        private ModelData _modelData7;
         private List<ModelData> _pointsDummyList; 
 
         #endregion
@@ -93,6 +102,18 @@ namespace mainWindow
         {
             get { return _modelData5; }
             set { _modelData5 = value; OnPropertyChanged("ModelData5"); }
+        }
+
+        public ModelData ModelData6
+        {
+            get { return _modelData6; }
+            set { _modelData6= value; OnPropertyChanged("ModelData6"); }
+        }
+
+        public ModelData ModelData7
+        {
+            get { return _modelData7; }
+            set { _modelData7 = value; OnPropertyChanged("ModelData7"); }
         }
 
         public List<ModelData> PointsDummyList
