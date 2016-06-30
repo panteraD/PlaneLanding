@@ -458,12 +458,11 @@ namespace mainWindow
             var yAxis = new OxyPlot.Axes.LinearAxis()
             {
                 Position = AxisPosition.Left,
-                AxisTitleDistance = 20,
-                
+                AxisTitleDistance = 11,
+
                 Title = yAxisTitle,
-                TitlePosition = 0.87,
-                TitleFontSize = 45,
-                FontSize = 25,
+                TitlePosition = 1,
+                TitleFontSize = 20,
                 StringFormat = "0.####"
 
             };
@@ -471,11 +470,9 @@ namespace mainWindow
             var xAxis = new OxyPlot.Axes.LinearAxis()
             {
                 Position = AxisPosition.Bottom,
-                AxisTitleDistance = 20,
                 Title = xAxisTitle,
-                TitlePosition = 0.95,
-                TitleFontSize = 45,
-                FontSize = 20,
+                TitlePosition = 1,
+                TitleFontSize = 20,
                 StringFormat = "0.####"
 
             };
@@ -484,8 +481,7 @@ namespace mainWindow
             PlotModel.Axes.Add(yAxis);
 
 
-            PlotModel.PlotMargins = new OxyThickness(90, 40, 40,80);
-            PlotModel.LegendFontSize = 30;
+            PlotModel.PlotMargins = new OxyThickness(60, 40, 40, 50);
         }
 
 
@@ -501,8 +497,8 @@ namespace mainWindow
             }
             var lineSerie = new LineSeries
             {
-                StrokeThickness = 5,
-                MarkerSize = 6,
+                StrokeThickness = 2,
+                MarkerSize = 3,
                 //default if false
                 CanTrackerInterpolatePoints = true,
                 Title = legend,
