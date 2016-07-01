@@ -128,7 +128,7 @@ namespace mainWindow
             _pointsDummyFriction = new PointsDummy();
             _pointsDummyWind = new PointsDummy();
             //TESTING
-            InitData(_data);
+            //InitData(_data);
         }
 
         public DataGrid DataGridTemp
@@ -328,7 +328,7 @@ namespace mainWindow
 
         public void ShowLFPlot()
         {
-            UpdatePlot("FRunFriction", "LengthFullDistance", "F_тр", "Lпос, м", "зависимость L от коэффицента трения", this.DataFrictionPointsList, SortByWhat.Friction);
+            UpdatePlot("FRunFriction", "LengthFullDistance", "Fтр", "Lпос, м", "зависимость L от коэффицента трения", this.DataFrictionPointsList, SortByWhat.Friction);
         }
 
         public void ShowLWPlot()

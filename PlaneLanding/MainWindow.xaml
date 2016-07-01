@@ -108,8 +108,8 @@
 
                                 <Border BorderThickness="3" BorderBrush="BlanchedAlmond" Grid.Row="1">
                                     <pl:Container>
-                                        <Label Content="Определение предельно допустмого бокового ветра" FontSize="14" FontWeight="DemiBold" ></Label>
-                                        <dc:LabelTextBox  Label="Продольный ветер, м/с"  Text="{Binding Data.CrossWind, StringFormat={}0.####}"  Width="Auto"/>
+                                        <Label Content="Определение предельно допустимого бокового ветра" FontSize="14" FontWeight="DemiBold" ></Label>
+                                        <dc:LabelTextBox  Label="Продольный ветер, м/с"  Text="{Binding Data.LongitudinalWind, StringFormat={}0.####}"  Width="Auto"/>
                                         <dc:LabelTextBox  Label="Боковой ветер, м/с"  Text="{Binding Data.CrossWind, StringFormat={}0.####}"  Width="Auto"/>
                                         <dc:LabelTextBox  Label="Коэффициент сцепления"     Width="Auto" Text="0"/>
                                         <dc:LabelTextBox  Label="Предельно допустимое значение продольного ветра ветра, м/с"     Width="Auto" Text="0"/>
@@ -201,7 +201,7 @@
                                 <dc:LabelTextBox  Label="Масса, т" Text="{Binding Data.Mass, StringFormat={}0.####}"   Width="Auto" />
                                 <dc:LabelTextBox  Label="Высота условного препятствия, м" Text="{Binding Data.Hlanding, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Продольный ветер, м/с" Text="{Binding Data.LongitudinalWind, StringFormat={}0.####}"  Width="Auto"/>
-                                <dc:LabelTextBox  Label="Поперечный ветер, м/с" Text="{Binding Data.CrossWind, StringFormat={}0.####}"   Width="Auto"/>
+                                <dc:LabelTextBox  Label="Боковой ветер, м/с" Text="{Binding Data.CrossWind, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Температура окружающей среды, градусы Цельсия" Text="{Binding Data.Temperature, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Максимальный коэффициент подъемной силы при посадке (Су max пос)" Text="{Binding Data.CyMaxLanding, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox  Label="Коэффициент лобового сопротивления при планировании (Сx пл)"  Text="{Binding Data.CxGliding, StringFormat={}0.####}"   Width="Auto"/>
