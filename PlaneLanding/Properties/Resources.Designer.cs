@@ -79,15 +79,5 @@ namespace PlaneLanding.Properties {
                 return ((byte[])(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Variants {
-            get {
-                object obj = ResourceManager.GetObject("Variants", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }
