@@ -47,7 +47,7 @@
                                 <Label Content="Определение посадочной дистанции и потребной посадочной дистанции" FontSize="14" FontWeight="DemiBold" />
                                 <dc:LabelTextBox x:Name="LtbMass"  Label="Масса, т" Text="{Binding Data.Mass, StringFormat={}0.####}"   Width="Auto" />
                                 <dc:LabelTextBox x:Name="LtbHLanding"  Label="Высота условного препятствия, м" Text="{Binding Data.Hlanding, StringFormat={}0.####}"   Width="Auto" />
-                                <dc:LabelTextBox x:Name="LtbLongitudatWind"  Label="Продольная составляющая ветра, м/с" Text="{Binding Data.LongitudinalWind, StringFormat={}0.####}"  Width="Auto"/>
+                                <dc:LabelTextBox x:Name="LtbLongitudatWind"  Label="Продольная составляющая ветра, м/с" Text="{Binding Data.LongitudinalWind, StringFormat=0.####}"  Width="Auto" />
                                 <dc:LabelTextBox x:Name="LtbCrossWind" Label="Боковая составляющая ветра, м/с" Text="{Binding Data.CrossWind, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox x:Name="LtbTemperature"  Label="Температура, ºC" Text="{Binding Data.Temperature, StringFormat={}0.####}"   Width="Auto"/>
                                 <dc:LabelTextBox x:Name="LtbСyLandingMax"  Label="Максимальный коэффициент подъемной силы при посадке (Су max пос)" Text="{Binding Data.CyMaxLanding, StringFormat={}0.####}"   Width="Auto"/>
